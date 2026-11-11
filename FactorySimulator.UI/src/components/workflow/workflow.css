@@ -1,0 +1,5 @@
+﻿.workflow {
+    min-height: 0;
+    overflow-y: auto;
+    padding: 20px;
+}

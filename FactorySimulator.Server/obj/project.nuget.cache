@@ -1,0 +1,19 @@
+{
+  "version": 2,
+  "dgSpecHash": "VQVJKpNtLmc=",
+  "success": true,
+  "projectFilePath": "C:\\projects\\FactorySimulator\\FactorySimulator.Server\\FactorySimulator.Server.csproj",
+  "expectedPackageFiles": [
+    "C:\\Users\\klimo\\.nuget\\packages\\dnsclient\\1.6.1\\dnsclient.1.6.1.nupkg.sha512",
+    "C:\\Users\\klimo\\.nuget\\packages\\mongodb.bson\\3.13.0\\mongodb.bson.3.13.0.nupkg.sha512",
+    "C:\\Users\\klimo\\.nuget\\packages\\mongodb.driver\\3.13.0\\mongodb.driver.3.13.0.nupkg.sha512",
+    "C:\\Users\\klimo\\.nuget\\packages\\sharpcompress\\0.48.1\\sharpcompress.0.48.1.nupkg.sha512",
+    "C:\\Users\\klimo\\.nuget\\packages\\snappier\\1.3.1\\snappier.1.3.1.nupkg.sha512",
+    "C:\\Users\\klimo\\.nuget\\packages\\zstdsharp.port\\0.7.3\\zstdsharp.port.0.7.3.nupkg.sha512",
+    "C:\\Users\\klimo\\.nuget\\packages\\microsoft.netcore.app.ref\\10.0.14\\microsoft.netcore.app.ref.10.0.14.nupkg.sha512",
+    "C:\\Users\\klimo\\.nuget\\packages\\microsoft.windowsdesktop.app.ref\\10.0.14\\microsoft.windowsdesktop.app.ref.10.0.14.nupkg.sha512",
+    "C:\\Users\\klimo\\.nuget\\packages\\microsoft.aspnetcore.app.ref\\10.0.14\\microsoft.aspnetcore.app.ref.10.0.14.nupkg.sha512",
+    "C:\\Users\\klimo\\.nuget\\packages\\microsoft.netcore.app.host.win-x64\\10.0.14\\microsoft.netcore.app.host.win-x64.10.0.14.nupkg.sha512"
+  ],
+  "logs": []
+}

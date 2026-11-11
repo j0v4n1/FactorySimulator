@@ -1,0 +1,11 @@
+C:\projects\FactorySimulator\FactorySimulator.Core\bin\Debug\net10.0\FactorySimulator.Core.deps.json
+C:\projects\FactorySimulator\FactorySimulator.Core\bin\Debug\net10.0\FactorySimulator.Core.dll
+C:\projects\FactorySimulator\FactorySimulator.Core\bin\Debug\net10.0\FactorySimulator.Core.pdb
+C:\projects\FactorySimulator\FactorySimulator.Core\obj\Debug\net10.0\FactorySimulator.Core.GeneratedMSBuildEditorConfig.editorconfig
+C:\projects\FactorySimulator\FactorySimulator.Core\obj\Debug\net10.0\FactorySimulator.Core.AssemblyInfoInputs.cache
+C:\projects\FactorySimulator\FactorySimulator.Core\obj\Debug\net10.0\FactorySimulator.Core.AssemblyInfo.cs
+C:\projects\FactorySimulator\FactorySimulator.Core\obj\Debug\net10.0\FactorySimulator.Core.csproj.CoreCompileInputs.cache
+C:\projects\FactorySimulator\FactorySimulator.Core\obj\Debug\net10.0\FactorySimulator.Core.dll
+C:\projects\FactorySimulator\FactorySimulator.Core\obj\Debug\net10.0\refint\FactorySimulator.Core.dll
+C:\projects\FactorySimulator\FactorySimulator.Core\obj\Debug\net10.0\FactorySimulator.Core.pdb
+C:\projects\FactorySimulator\FactorySimulator.Core\obj\Debug\net10.0\ref\FactorySimulator.Core.dll

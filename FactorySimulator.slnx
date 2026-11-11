@@ -1,0 +1,5 @@
+<Solution>
+  <Project Path="FactorySimulator.Core/FactorySimulator.Core.csproj" />
+  <Project Path="FactorySimulator.Infrastructure/FactorySimulator.Infrastructure.csproj" />
+  <Project Path="FactorySimulator.Server/FactorySimulator.Server.csproj" />
+</Solution>

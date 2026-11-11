@@ -1,0 +1,15 @@
+C:\projects\FactorySimulator\FactorySimulator.Infrastructure\bin\Debug\net10.0\FactorySimulator.Infrastructure.deps.json
+C:\projects\FactorySimulator\FactorySimulator.Infrastructure\bin\Debug\net10.0\FactorySimulator.Infrastructure.dll
+C:\projects\FactorySimulator\FactorySimulator.Infrastructure\bin\Debug\net10.0\FactorySimulator.Infrastructure.pdb
+C:\projects\FactorySimulator\FactorySimulator.Infrastructure\bin\Debug\net10.0\FactorySimulator.Core.dll
+C:\projects\FactorySimulator\FactorySimulator.Infrastructure\bin\Debug\net10.0\FactorySimulator.Core.pdb
+C:\projects\FactorySimulator\FactorySimulator.Infrastructure\obj\Debug\net10.0\FactorySimulator.Infrastructure.csproj.AssemblyReference.cache
+C:\projects\FactorySimulator\FactorySimulator.Infrastructure\obj\Debug\net10.0\FactorySimulator.Infrastructure.GeneratedMSBuildEditorConfig.editorconfig
+C:\projects\FactorySimulator\FactorySimulator.Infrastructure\obj\Debug\net10.0\FactorySimulator.Infrastructure.AssemblyInfoInputs.cache
+C:\projects\FactorySimulator\FactorySimulator.Infrastructure\obj\Debug\net10.0\FactorySimulator.Infrastructure.AssemblyInfo.cs
+C:\projects\FactorySimulator\FactorySimulator.Infrastructure\obj\Debug\net10.0\FactorySimulator.Infrastructure.csproj.CoreCompileInputs.cache
+C:\projects\FactorySimulator\FactorySimulator.Infrastructure\obj\Debug\net10.0\FactoryS.584AF400.Up2Date
+C:\projects\FactorySimulator\FactorySimulator.Infrastructure\obj\Debug\net10.0\FactorySimulator.Infrastructure.dll
+C:\projects\FactorySimulator\FactorySimulator.Infrastructure\obj\Debug\net10.0\refint\FactorySimulator.Infrastructure.dll
+C:\projects\FactorySimulator\FactorySimulator.Infrastructure\obj\Debug\net10.0\FactorySimulator.Infrastructure.pdb
+C:\projects\FactorySimulator\FactorySimulator.Infrastructure\obj\Debug\net10.0\ref\FactorySimulator.Infrastructure.dll
