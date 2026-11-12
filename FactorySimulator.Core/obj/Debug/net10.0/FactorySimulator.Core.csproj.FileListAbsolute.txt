@@ -9,3 +9,4 @@ C:\projects\FactorySimulator\FactorySimulator.Core\obj\Debug\net10.0\FactorySimu
 C:\projects\FactorySimulator\FactorySimulator.Core\obj\Debug\net10.0\refint\FactorySimulator.Core.dll
 C:\projects\FactorySimulator\FactorySimulator.Core\obj\Debug\net10.0\FactorySimulator.Core.pdb
 C:\projects\FactorySimulator\FactorySimulator.Core\obj\Debug\net10.0\ref\FactorySimulator.Core.dll
+C:\projects\FactorySimulator\FactorySimulator.Core\obj\Debug\net10.0\FactorySimulator.Core.sourcelink.json

@@ -38,3 +38,4 @@ C:\projects\FactorySimulator\FactorySimulator.Server\bin\Debug\net10.0\Snappier.
 C:\projects\FactorySimulator\FactorySimulator.Server\bin\Debug\net10.0\ZstdSharp.dll
 C:\projects\FactorySimulator\FactorySimulator.Server\bin\Debug\net10.0\FactorySimulator.Infrastructure.dll
 C:\projects\FactorySimulator\FactorySimulator.Server\bin\Debug\net10.0\FactorySimulator.Infrastructure.pdb
+C:\projects\FactorySimulator\FactorySimulator.Server\obj\Debug\net10.0\FactorySimulator.Server.sourcelink.json

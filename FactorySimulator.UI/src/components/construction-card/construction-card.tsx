@@ -36,6 +36,22 @@ export default function ConstructionCard() {
     return <p>Ошибка поиска предприятия или оборудования</p>;
   }
 
+  const allowedRecipes = construction.allowedRecipes.map((recipe) => {
+    return (
+      <li>
+        <button
+          onClick={() => {
+            setRecipe(recipe.name);
+          }}
+          type="button"
+          className="dropdown-item"
+        >
+          {recipe.name}
+        </button>
+      </li>
+    );
+  });
+
   return (
     <div className="card w-100 me-3 mb-3 mt-3">
       <div className="card-header d-flex justify-content-between">
@@ -89,41 +105,7 @@ export default function ConstructionCard() {
           >
             {recipe}
           </button>
-          <ul className="dropdown-menu">
-            <li>
-              <button
-                onClick={() => {
-                  setRecipe("Железная руда");
-                }}
-                type="button"
-                className="dropdown-item "
-              >
-                Железная руда
-              </button>
-            </li>
-            <li>
-              <button
-                onClick={() => {
-                  setRecipe("Медная руда");
-                }}
-                type="button"
-                className="dropdown-item"
-              >
-                Медная руда
-              </button>
-            </li>
-            <li>
-              <button
-                onClick={() => {
-                  setRecipe("Уголь");
-                }}
-                type="button"
-                className="dropdown-item"
-              >
-                Уголь
-              </button>
-            </li>
-          </ul>
+          <ul className="dropdown-menu">{allowedRecipes}</ul>
         </div>
         <ul className="list-group list-group-flush">
           <li className="list-group-item d-flex justify-content-between">

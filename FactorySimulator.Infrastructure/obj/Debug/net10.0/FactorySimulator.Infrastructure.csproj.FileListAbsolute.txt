@@ -13,3 +13,4 @@ C:\projects\FactorySimulator\FactorySimulator.Infrastructure\obj\Debug\net10.0\F
 C:\projects\FactorySimulator\FactorySimulator.Infrastructure\obj\Debug\net10.0\refint\FactorySimulator.Infrastructure.dll
 C:\projects\FactorySimulator\FactorySimulator.Infrastructure\obj\Debug\net10.0\FactorySimulator.Infrastructure.pdb
 C:\projects\FactorySimulator\FactorySimulator.Infrastructure\obj\Debug\net10.0\ref\FactorySimulator.Infrastructure.dll
+C:\projects\FactorySimulator\FactorySimulator.Infrastructure\obj\Debug\net10.0\FactorySimulator.Infrastructure.sourcelink.json

@@ -4,22 +4,7 @@
   type PayloadAction,
 } from "@reduxjs/toolkit";
 import axios, { type AxiosResponse } from "axios";
-
-type Construction = {
-  id: string;
-  code: string;
-  name: string;
-  description: string;
-  constructionCost: number;
-  imageKey: string;
-  allowedEquipment: {
-    equipmentCode: string;
-    minCount: number;
-    maxCount: number;
-  };
-  minEmployees: number;
-  maxEmployees: number;
-};
+import type { Construction } from "../types";
 
 export const fetchConstructions = createAsyncThunk<Construction[]>(
   "constructions/fetchConstructions",
