@@ -10,9 +10,9 @@ export const fetchCorporationData = createAsyncThunk<number>(
   async () => {
     const response = await fetch("http://localhost:5188/api/corporation");
 
-    const balance = await response.json();
+    console.log(response.json());
 
-    return balance;
+    return await response.json();
   },
 );
 

@@ -20,6 +20,6 @@ public class Enterprise(
 
     public decimal TotalConstructionCost { get; } = totalConstructionCost;
 
-    public EnterpriseStatus Status { get; } = EnterpriseStatus.UnderConstruction;
+    public EnterpriseStatus Status { get; private set; } = EnterpriseStatus.UnderConstruction;
     public string Recipe { get; } = recipe;
 }

@@ -4,14 +4,47 @@ import { useParams } from "react-router";
 import { useAppSelector } from "../../store/hook.ts";
 import { useState } from "react";
 import Modal from "../modal/modal.tsx";
+import Popover from "react-bootstrap/Popover";
+import Button from "react-bootstrap/Button";
+import OverlayTrigger from "react-bootstrap/OverlayTrigger";
+import type { Recipe } from "../../store/types.ts";
 
 export default function ConstructionCard() {
   const { id } = useParams();
 
+  const popover = (
+    <Popover id="popover-basic">
+      <Popover.Header as="h3">ВНИМАНИЕ!</Popover.Header>
+      <Popover.Body>Перед строительством надо выбрать рецепт!</Popover.Body>
+    </Popover>
+  );
+
+  const buildButton = () => {
+    if (recipe === "Выберите рецепт") {
+      return (
+        <OverlayTrigger trigger="click" placement="left" overlay={popover}>
+          <Button variant="primary">Построить</Button>
+        </OverlayTrigger>
+      );
+    } else {
+      return (
+        <button
+          type="button"
+          className="btn btn-primary"
+          data-bs-toggle="modal"
+          data-bs-target="#exampleModal"
+          data-bs-content="Выберите рецепт"
+        >
+          Построить
+        </button>
+      );
+    }
+  };
+
   const [employees, setEmployees] = useState(10);
   const [equipment, setEquipment] = useState(10);
 
-  const [recipe, setRecipe] = useState("Выберите рецепт");
+  const [recipe, setRecipe] = useState<Recipe | string>("Выберите рецепт");
 
   const formatNumber = (value: number) =>
     new Intl.NumberFormat("ru-RU").format(value);
@@ -38,10 +71,10 @@ export default function ConstructionCard() {
 
   const allowedRecipes = construction.allowedRecipes.map((recipe) => {
     return (
-      <li>
+      <li key={recipe.code}>
         <button
           onClick={() => {
-            setRecipe(recipe.name);
+            setRecipe(recipe);
           }}
           type="button"
           className="dropdown-item"
@@ -103,7 +136,7 @@ export default function ConstructionCard() {
             data-bs-toggle="dropdown"
             aria-expanded="false"
           >
-            {recipe}
+            {typeof recipe === "string" ? recipe : recipe.name}
           </button>
           <ul className="dropdown-menu">{allowedRecipes}</ul>
         </div>
@@ -139,15 +172,7 @@ export default function ConstructionCard() {
             )}{" "}
             ₽
           </span>
-
-          <button
-            type="button"
-            className="btn btn-primary"
-            data-bs-toggle="modal"
-            data-bs-target="#exampleModal"
-          >
-            Построить
-          </button>
+          {buildButton()}
           <Modal
             employees={employees}
             equipment={equipment}

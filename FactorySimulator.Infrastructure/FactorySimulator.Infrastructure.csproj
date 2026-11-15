@@ -5,7 +5,11 @@
     </ItemGroup>
 
     <ItemGroup>
-        <PackageReference Include="MongoDB.Driver" Version="3.13.0"/>
+        <PackageReference Include="Npgsql.EntityFrameworkCore.PostgreSQL" Version="10.0.*"/>
+    </ItemGroup>
+
+    <ItemGroup>
+        <Folder Include="Persistence\PostgreSql\Repositories\"/>
     </ItemGroup>
 
     <PropertyGroup>

@@ -1,10 +1,16 @@
 using FactorySimulator.Core;
-using FactorySimulator.Infrastructure.Persistence.MongoDb;
-using FactorySimulator.Infrastructure.Persistence.MongoDb.Repositories;
+using FactorySimulator.Infrastructure.Persistence.PostgreSql;
 using FactorySimulator.Server.Endpoints;
 using FactorySimulator.Server.Hubs;
+using Microsoft.EntityFrameworkCore;
+using FactorySimulator.Server;
 
 var builder = WebApplication.CreateBuilder(args);
+
+var connectionString = builder.Configuration.GetConnectionString("DefaultConnection");
+
+builder.Services.AddDbContext<AppDbContext>(options =>
+    options.UseNpgsql(connectionString));
 
 builder.Services.AddCors(options =>
 {
@@ -19,17 +25,6 @@ builder.Services.AddCors(options =>
 
 builder.Services.AddSignalR();
 
-var mongoDbSettings = builder.Configuration
-                          .GetSection("MongoDb")
-                          .Get<MongoDbSettings>()
-                      ?? throw new InvalidOperationException("MongoDB settings not found.");
-
-builder.Services.AddSingleton(mongoDbSettings);
-builder.Services.AddSingleton<MongoDbContext>();
-builder.Services.AddSingleton<ConstructionRepository>();
-builder.Services.AddSingleton<RecipeRepository>();
-builder.Services.AddSingleton<EquipmentRepository>();
-builder.Services.AddSingleton<ResourceRepository>();
 builder.Services.AddSingleton<Game>();
 
 var app = builder.Build();

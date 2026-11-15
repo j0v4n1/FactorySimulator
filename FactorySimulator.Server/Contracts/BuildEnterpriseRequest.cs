@@ -1,9 +1,11 @@
-﻿namespace FactorySimulator.Server.Contracts;
+﻿using FactorySimulator.Infrastructure.Persistence.PostgreSql.Models;
 
-public abstract class BuildEnterpriseRequest
+namespace FactorySimulator.Server.Contracts;
+
+public class BuildEnterpriseRequest
 {
     public string ConstructionCode { get; set; } = string.Empty;
     public int EquipmentCount { get; set; }
     public int Employees { get; set; }
-    public string Recipe { get; }
+    public RecipeModel Recipe { get; set; }
 }

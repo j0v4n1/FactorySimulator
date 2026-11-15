@@ -5,6 +5,7 @@ import loggingEnterprise from "../assets/LoggingEnterprise.jpg";
 import woodworkingEnterprise from "../assets/woodworkingEnterprise.jpg";
 import chemicalPlant from "../assets/chemical_plant.jpg";
 import oilExtractionEnterprise from "../assets/oil_extraction_enterprise.jpg";
+import oilRefinery from "../assets/oil_refinery.jpg";
 
 export const constructionImages: Record<string, string> = {
   mining_enterprise: ironImage,
@@ -14,4 +15,5 @@ export const constructionImages: Record<string, string> = {
   woodworking_enterprise: woodworkingEnterprise,
   chemical_plant: chemicalPlant,
   oil_extraction_enterprise: oilExtractionEnterprise,
+  oil_refinery: oilRefinery,
 };

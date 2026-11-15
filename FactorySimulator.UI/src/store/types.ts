@@ -19,7 +19,7 @@ type RecipeResourceDocument = {
   amount: number;
 };
 
-type Recipe = {
+export type Recipe = {
   code: string;
   name: string;
   inputs: RecipeResourceDocument[];

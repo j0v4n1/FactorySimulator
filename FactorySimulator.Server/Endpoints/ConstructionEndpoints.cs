@@ -1,8 +1,10 @@
 ﻿using FactorySimulator.Core;
-using FactorySimulator.Infrastructure.Persistence.MongoDb.Repositories;
+using FactorySimulator.Infrastructure.Persistence.PostgreSql;
+using FactorySimulator.Infrastructure.Persistence.PostgreSql.Models;
 using FactorySimulator.Server.Contracts;
 using FactorySimulator.Server.Hubs;
 using Microsoft.AspNetCore.SignalR;
+using Microsoft.EntityFrameworkCore;
 
 namespace FactorySimulator.Server.Endpoints;
 
@@ -11,43 +13,64 @@ public static class ConstructionEndpoints
     public static void MapEndpoints(WebApplication app)
     {
         app.MapPost("/api/constructions/build",
-            async (ConstructionRepository constructionRepository, EquipmentRepository equipmentRepository,
-                BuildEnterpriseRequest buildEnterpriseRequest, Game game, IHubContext<GameHub> hubContext) =>
+            async (AppDbContext db, BuildEnterpriseRequest buildEnterpriseRequest, Game game,
+                IHubContext<GameHub> hubContext) =>
             {
-                var resultConstructionDocument =
-                    await constructionRepository.GetByCodeAsync(buildEnterpriseRequest.ConstructionCode);
+                var resultConstruction = await db.Constructions
+                    .FirstOrDefaultAsync(x => x.Code == buildEnterpriseRequest.ConstructionCode);
 
-                if (resultConstructionDocument is null)
-                    return Results.NotFound("Не найден документ на постройку");
+                if (resultConstruction is null)
+                    return Results.NotFound("Не найден документ на постройку, строка 21 в файле ConstructionEndpoints");
 
-                if (buildEnterpriseRequest.Employees < resultConstructionDocument.MinEmployees ||
-                    buildEnterpriseRequest.Employees > resultConstructionDocument.MaxEmployees)
-                    return Results.BadRequest("Ошибка в количестве сотрудников");
+                if (buildEnterpriseRequest.Employees < resultConstruction.MinEmployees ||
+                    buildEnterpriseRequest.Employees > resultConstruction.MaxEmployees)
+                    return Results.BadRequest(
+                        "Ошибка в количестве сотрудников, строка 26 в файле ConstructionEndpoints");
 
-                var resultEquipmentDocument =
-                    await equipmentRepository.GetByCodeAsync(resultConstructionDocument.AllowedEquipment.EquipmentCode);
+                var resultEquipment = await db.Equipments
+                    .FirstOrDefaultAsync(x => x.Code == resultConstruction.AllowedEquipment.EquipmentCode);
 
-                if (resultEquipmentDocument is null)
-                    return Results.NotFound("Не найден документ на оборудование");
+                if (resultEquipment is null)
+                    return Results.NotFound(
+                        "Не найден документ на оборудование, строка 33 в файле ConstructionEndpoints");
 
-                if (buildEnterpriseRequest.EquipmentCount < resultConstructionDocument.AllowedEquipment.MinCount ||
-                    buildEnterpriseRequest.EquipmentCount > resultConstructionDocument.AllowedEquipment.MaxCount)
-                    return Results.BadRequest("Ошибка в количестве оборудования");
+                if (buildEnterpriseRequest.EquipmentCount < resultConstruction.AllowedEquipment.MinCount ||
+                    buildEnterpriseRequest.EquipmentCount > resultConstruction.AllowedEquipment.MaxCount)
+                    return Results.BadRequest(
+                        "Ошибка в количестве оборудования, строка 38 в файле ConstructionEndpoints");
 
-                var isAllowedRecipe = resultConstructionDocument.AllowedRecipes.Contains(buildEnterpriseRequest.Recipe);
+                var isAllowedRecipe =
+                    resultConstruction.AllowedRecipes.Contains(buildEnterpriseRequest.Recipe.Code);
 
-                if (!isAllowedRecipe) return Results.BadRequest("Ошибка рецепта");
+                if (!isAllowedRecipe)
+                    return Results.BadRequest("Ошибка рецепта, строка 43 в файле ConstructionEndpoints");
 
-                var totalCost = resultConstructionDocument.ConstructionCost +
-                                resultEquipmentDocument.UnitCost * buildEnterpriseRequest.EquipmentCount;
+                var totalCost = resultConstruction.ConstructionCost +
+                                resultEquipment.UnitCost * buildEnterpriseRequest.EquipmentCount;
 
-                var enterprise = game.TryBuildEnterprise(resultConstructionDocument.Name,
-                    resultConstructionDocument.Code,
+                var enterprise = game.TryBuildEnterprise(resultConstruction.Name,
+                    resultConstruction.Code,
                     buildEnterpriseRequest.EquipmentCount,
-                    buildEnterpriseRequest.Employees, totalCost, buildEnterpriseRequest.Recipe);
+                    buildEnterpriseRequest.Employees, totalCost, buildEnterpriseRequest.Recipe.Name);
 
                 if (enterprise is null)
-                    return Results.BadRequest("Не удалось создать предприятие");
+                    return Results.BadRequest(
+                        "Не удалось создать предприятие, строка 50 в файле ConstructionEndpoints");
+
+                var enterpriseModel = new EnterpriseModel
+                {
+                    Id = enterprise.Id,
+                    Name = enterprise.Name,
+                    ConstructionCode = enterprise.ConstructionCode,
+                    TotalConstructionCost = enterprise.TotalConstructionCost,
+                    EquipmentCount = enterprise.EquipmentCount,
+                    Employees = enterprise.Employees,
+                    Status = enterprise.Status.ToString(),
+                    RecipeCode = buildEnterpriseRequest.Recipe.Code
+                };
+
+                await db.Enterprises.AddAsync(enterpriseModel);
+                await db.SaveChangesAsync();
 
                 await hubContext.Clients.All.SendAsync(
                     "BalanceUpdated",
@@ -61,41 +84,38 @@ public static class ConstructionEndpoints
                 return Results.Ok(response);
             });
 
-        app.MapGet("/api/constructions",
-            async (ConstructionRepository constructionRepository, RecipeRepository recipeRepository,
-                ResourceRepository resourceRepository) =>
+        app.MapGet("/api/constructions", async (AppDbContext db) =>
+        {
+            var constructions = await db.Constructions.ToListAsync();
+            var recipes = await db.Recipes.ToListAsync();
+            var resources = await db.Resources.ToListAsync();
+
+            var result = constructions.Select(construction => new
             {
-                var constructions = await constructionRepository.GetAllAsync();
-                var recipes = await recipeRepository.GetAllAsync();
-                var resources = await resourceRepository.GetAllAsync();
-                var result = constructions.Select(construction => new
-                {
-                    Id = construction.Id.ToString(),
-                    construction.Code,
-                    construction.Name,
-                    construction.Description,
-                    construction.ConstructionCost,
-                    construction.ImageKey,
-                    construction.AllowedEquipment,
-                    construction.MinEmployees,
-                    construction.MaxEmployees,
-                    AllowedRecipes = recipes.Where(recipe => construction.AllowedRecipes.Contains(recipe.Code))
-                        .Select(recipe => new
+                Id = construction.Id.ToString(),
+                construction.Code,
+                construction.Name,
+                construction.Description,
+                construction.ConstructionCost,
+                construction.ImageKey,
+                construction.AllowedEquipment,
+                construction.MinEmployees,
+                construction.MaxEmployees,
+                AllowedRecipes = recipes.Where(recipe => construction.AllowedRecipes.Contains(recipe.Code))
+                    .Select(recipe => new
+                    {
+                        recipe.Code,
+                        recipe.Name,
+                        Inputs = recipe.Inputs.Select(input => new
                         {
-                            recipe.Code,
-                            recipe.Name,
-
-                            Inputs = recipe.Inputs.Select(input => new
-                            {
-                                Resourse = resources.FirstOrDefault(r => r.Code == input.ResourceCode),
-                                input.Amount
-                            }),
-
-                            OutputResourceCode = resources.FirstOrDefault(r => r.Code == recipe.OutputResourceCode)
-                        }).ToList()
-                });
-
-                return Results.Ok(result);
+                            Resourse = resources.FirstOrDefault(r => r.Code == input.ResourceCode),
+                            input.Amount
+                        }),
+                        OutputResourceCode = resources.FirstOrDefault(r => r.Code == recipe.OutputResourceCode)
+                    }).ToList()
             });
+
+            return Results.Ok(result);
+        });
     }
 }

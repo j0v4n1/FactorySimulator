@@ -3,6 +3,7 @@ import api from "../../utils/api.ts";
 import { useRef } from "react";
 import { useAppDispatch } from "../../store/hook.ts";
 import { addEnterprise } from "../../store/slices/corporation-slice.ts";
+import type { Recipe } from "../../store/types.ts";
 
 type ModalProps = {
   employees: number;
@@ -12,8 +13,9 @@ type ModalProps = {
   production: number;
   totalCost: number;
   constructionCode: string;
-  recipe: string;
+  recipe: Recipe | string;
 };
+
 export default function Modal({
   employees,
   equipment,
@@ -32,24 +34,32 @@ export default function Modal({
   const modalRef = useRef<HTMLDivElement>(null);
 
   const buildEnterprise = () => {
-    api
-      .post("/api/constructions/build", {
-        constructionCode,
-        equipmentCount: equipment,
-        employees,
-        recipe,
-      })
-      .then((response) => {
-        dispatch(addEnterprise(response.data));
-        if (modalRef.current) {
-          modalRef.current
-            .querySelector<HTMLButtonElement>('[data-bs-dismiss="modal"]')
-            ?.click();
-        }
-      })
-      .catch((error) => {
-        console.log(error);
-      });
+    if (typeof recipe !== "string") {
+      const updatedRecipe = {
+        name: recipe.name,
+        code: recipe.code,
+        inputs: recipe.inputs,
+        outputResourceCode: recipe.outputResourceCode.code,
+      };
+      api
+        .post("/api/constructions/build", {
+          constructionCode,
+          equipmentCount: equipment,
+          employees,
+          recipe: updatedRecipe,
+        })
+        .then((response) => {
+          dispatch(addEnterprise(response.data));
+          if (modalRef.current) {
+            modalRef.current
+              .querySelector<HTMLButtonElement>('[data-bs-dismiss="modal"]')
+              ?.click();
+          }
+        })
+        .catch(() => {
+          // Ошибка уже выведена в консоль глобальным интерцептором
+        });
+    }
   };
 
   return (
@@ -75,7 +85,9 @@ export default function Modal({
             ></button>
           </div>
           <div className="modal-body">
-            <div>Рецепт: {recipe}</div>
+            <div>
+              Рецепт: {typeof recipe === "string" ? recipe : recipe.name}
+            </div>
             <div>Количество сотрудников: {employees}</div>
             <div>Количество оборудования: {equipment}</div>
             <div>
