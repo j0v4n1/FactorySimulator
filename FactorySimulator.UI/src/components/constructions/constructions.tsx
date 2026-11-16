@@ -62,7 +62,7 @@ export default function Constructions() {
           setCurrentConstructions(tab.constructions);
         }}
         type="button"
-        className={`btn btn-dark mt-1 mb-1 me-1 ${activeTab === tab.id ? "active" : ""}`}
+        className={`btn btn-dark ${activeTab === "all" ? "mt-1 mb-1 me-1" : "m-1"} ${activeTab === tab.id ? "active" : ""}`}
       >
         {tab.label} <Badge bg="secondary">{tab.constructions.length}</Badge>
       </button>

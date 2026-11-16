@@ -7,7 +7,7 @@ export type Enterprise = {
   status: EnterpriseStatus;
   equipmentCount: number;
   employees: number;
-  recipe: string;
+  recipe: Recipe;
 };
 
 type Resource = {
@@ -23,6 +23,7 @@ type RecipeResourceDocument = {
 };
 
 export type Recipe = {
+  id: string;
   code: string;
   name: string;
   inputs: RecipeResourceDocument[];
@@ -44,4 +45,13 @@ export type Construction = {
   minEmployees: number;
   maxEmployees: number;
   allowedRecipes: Recipe[];
+};
+
+export type CorporationData = {
+  balance: number;
+  enterprises: Enterprise[];
+};
+
+export type GameData = {
+  recipes: Recipe[];
 };

@@ -34,6 +34,7 @@ export default function Modal({
   const modalRef = useRef<HTMLDivElement>(null);
 
   const buildEnterprise = () => {
+    console.log(recipe);
     if (typeof recipe !== "string") {
       const updatedRecipe = {
         name: recipe.name,

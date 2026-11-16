@@ -20,4 +20,10 @@ public class Corporation
         ArgumentNullException.ThrowIfNull(enterprise);
         _enterprises.Add(enterprise);
     }
+
+    public void LoadEnterprisesFromDb(IEnumerable<Enterprise> loadedEnterprises)
+    {
+        _enterprises.Clear();
+        _enterprises.AddRange(loadedEnterprises);
+    }
 }

@@ -3,14 +3,20 @@ import {
   createSlice,
   type PayloadAction,
 } from "@reduxjs/toolkit";
-import type { Enterprise } from "../types.ts";
+import type { CorporationData, Enterprise } from "../types.ts";
+import api from "../../utils/api.ts";
+import type { AxiosResponse } from "axios";
 
-export const fetchCorporationData = createAsyncThunk<number>(
+export const fetchCorporationData = createAsyncThunk(
   "corporation/fetchCorporationData",
   async () => {
-    const response = await fetch("http://localhost:5188/api/corporation");
+    const response: AxiosResponse<CorporationData> = await api.get(
+      "http://localhost:5188/api/corporation",
+    );
 
-    return await response.json();
+    console.log(response.data);
+
+    return response.data;
   },
 );
 
@@ -38,9 +44,10 @@ const corporationSlice = createSlice({
 
     builder.addCase(
       fetchCorporationData.fulfilled,
-      (state, action: PayloadAction<number>) => {
+      (state, action: PayloadAction<CorporationData>) => {
         state.status = "succeeded";
-        state.balance = action.payload;
+        state.balance = action.payload.balance;
+        state.enterprises = action.payload.enterprises;
       },
     );
 

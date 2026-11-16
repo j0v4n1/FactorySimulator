@@ -13,7 +13,7 @@ using System.Reflection;
 [assembly: System.Reflection.AssemblyCompanyAttribute("FactorySimulator.Infrastructure")]
 [assembly: System.Reflection.AssemblyConfigurationAttribute("Debug")]
 [assembly: System.Reflection.AssemblyFileVersionAttribute("1.0.0.0")]
-[assembly: System.Reflection.AssemblyInformationalVersionAttribute("1.0.0+3fe9dcbc6fa58a7bda2de46fc27fbd829b49eca4")]
+[assembly: System.Reflection.AssemblyInformationalVersionAttribute("1.0.0+adf3cc8c7fdd617d4841a8d1d8a097f153fd2617")]
 [assembly: System.Reflection.AssemblyProductAttribute("FactorySimulator.Infrastructure")]
 [assembly: System.Reflection.AssemblyTitleAttribute("FactorySimulator.Infrastructure")]
 [assembly: System.Reflection.AssemblyVersionAttribute("1.0.0.0")]

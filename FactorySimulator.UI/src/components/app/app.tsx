@@ -9,6 +9,7 @@ import {
   fetchCorporationData,
   updateBalance,
 } from "../../store/slices/corporation-slice.ts";
+import { fetchGameData } from "../../store/slices/game-slice.ts";
 
 function App() {
   const dispatch = useAppDispatch();
@@ -17,6 +18,7 @@ function App() {
     dispatch(fetchConstructions());
     dispatch(fetchEquipments());
     dispatch(fetchCorporationData());
+    dispatch(fetchGameData());
   }, [dispatch]);
 
   useEffect(() => {

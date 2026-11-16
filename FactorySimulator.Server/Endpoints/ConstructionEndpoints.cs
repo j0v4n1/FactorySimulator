@@ -78,9 +78,12 @@ public static class ConstructionEndpoints
                     game.Corporation.Balance
                 );
 
+                var recipes = await db.Recipes.ToListAsync();
+                var recipe = recipes.FirstOrDefault(r => r.Code == enterpriseModel.RecipeCode);
+
                 var response = new EnterpriseResponseDto(enterprise.Id.ToString(), enterprise.Name,
                     enterprise.EquipmentCount,
-                    enterprise.Employees, enterprise.Status.ToString(), enterprise.Recipe);
+                    enterprise.Employees, enterprise.Status.ToString(), recipe);
 
                 return Results.Ok(response);
             });

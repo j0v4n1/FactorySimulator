@@ -1,5 +1,7 @@
 ﻿using FactorySimulator.Core;
+using FactorySimulator.Infrastructure.Persistence.PostgreSql;
 using FactorySimulator.Server.debug;
+using Microsoft.EntityFrameworkCore;
 
 namespace FactorySimulator.Server.Endpoints;
 
@@ -7,11 +9,17 @@ public static class CorporationEndpoints
 {
     public static void MapEndpoints(WebApplication app)
     {
-        app.MapGet("/api/corporation", (Game game) =>
+        app.MapGet("/api/corporation", async (Game game, AppDbContext db) =>
         {
-            var enterprises = new
+            var recipes = await db.Recipes.ToListAsync();
+            var resources = await db.Resources.ToListAsync();
+
+            var enterprises = game.Corporation.Enterprises.Select(enterprise =>
             {
-                Enterprises = game.Corporation.Enterprises.Select(enterprise => new
+
+                var recipe = recipes.FirstOrDefault(r => r.Code == enterprise.Recipe);
+
+                return new
                 {
                     enterprise.Id,
                     enterprise.Name,
@@ -19,17 +27,27 @@ public static class CorporationEndpoints
                     enterprise.EquipmentCount,
                     enterprise.Employees,
                     enterprise.TotalConstructionCost,
-                    enterprise.Status,
-                    enterprise.Recipe
-                })
-            };
+                    Status = enterprise.Status.ToString(),
+                    Recipe = recipe is null ? null : new
+                    {
+                        Id = recipe.Id.ToString(),
+                        recipe.Code,
+                        recipe.Name,
+                        Inputs = recipe.Inputs.Select(input => new
+                        {
+                            Resource = resources.FirstOrDefault(res => res.Code == input.ResourceCode),
+                            input.Amount
+                        }),
+                        OutputResource = resources.FirstOrDefault(res => res.Code == recipe.OutputResourceCode)
+                    }
+                };
 
-            DebugHelper.PrintJson(enterprises);
+            }).ToList();
 
             return Results.Ok(new
             {
                 game.Corporation.Balance,
-                Enterprises = enterprises
+                enterprises,
             });
         });
     }
