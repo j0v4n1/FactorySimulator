@@ -2,6 +2,7 @@
 using FactorySimulator.Infrastructure.Persistence.PostgreSql;
 using FactorySimulator.Infrastructure.Persistence.PostgreSql.Models;
 using FactorySimulator.Server.Contracts;
+using FactorySimulator.Server.debug;
 using FactorySimulator.Server.Hubs;
 using Microsoft.AspNetCore.SignalR;
 using Microsoft.EntityFrameworkCore;

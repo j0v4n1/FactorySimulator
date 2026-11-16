@@ -1,6 +1,22 @@
 import "./enterprises.css";
 import { NavLink } from "react-router";
 import { useAppSelector } from "../../store/hook.ts";
+import Badge from "react-bootstrap/Badge";
+import type { EnterpriseStatus } from "../../store/types.ts";
+
+const statusLabel: Record<EnterpriseStatus, string> = {
+  UnderConstruction: "Строится",
+  Operational: "Работает",
+  Paused: "Приостановлено",
+  NoResources: "Отсутствуют ресурсы",
+};
+
+const statusBadge: Record<EnterpriseStatus, string> = {
+  UnderConstruction: "info",
+  Operational: "success",
+  Paused: "warning",
+  NoResources: "danger",
+};
 
 export default function Enterprises() {
   const enterprises = useAppSelector(
@@ -12,9 +28,9 @@ export default function Enterprises() {
         <div className="card-body">
           <div className="d-flex justify-content-between align-items-center">
             <h5 className="card-title">{enterprise.name}</h5>
-            <span className="badge text-bg-success align-self-lg-start">
-              Работает
-            </span>
+            <Badge bg={statusBadge[enterprise.status]}>
+              {statusLabel[enterprise.status]}
+            </Badge>
           </div>
           <h6 className="card-subtitle mb-2 text-body-secondary">
             Добыча железной руды

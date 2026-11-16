@@ -3,5 +3,7 @@
 public enum EnterpriseStatus
 {
     UnderConstruction,
-    Operational
+    Operational,
+    Paused,
+    NoResources
 }

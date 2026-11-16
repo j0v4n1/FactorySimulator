@@ -10,8 +10,6 @@ export const fetchCorporationData = createAsyncThunk<number>(
   async () => {
     const response = await fetch("http://localhost:5188/api/corporation");
 
-    console.log(response.json());
-
     return await response.json();
   },
 );

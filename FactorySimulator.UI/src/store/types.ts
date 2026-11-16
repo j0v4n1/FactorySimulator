@@ -1,7 +1,10 @@
-﻿export type Enterprise = {
+﻿export type EnterpriseStatus =
+  "UnderConstruction" | "Operational" | "Paused" | "NoResources";
+
+export type Enterprise = {
   id: string;
   name: string;
-  status: string;
+  status: EnterpriseStatus;
   equipmentCount: number;
   employees: number;
   recipe: string;
