@@ -10,8 +10,10 @@ public class Enterprise
     public decimal TotalConstructionCost { get; private set; }
     public EnterpriseStatus Status { get; private set; }
     public string Recipe { get; private set; }
+    public string EquipmentCode { get; private set; }
 
-    public Enterprise(string name, string constructionCode, int equipmentCount, int employees, decimal totalConstructionCost, string recipe)
+
+    public Enterprise(string name, string constructionCode, int equipmentCount, int employees, decimal totalConstructionCost, string recipe, string equipmentCode)
     {
         Id = Guid.NewGuid();
         Name = name;
@@ -21,9 +23,10 @@ public class Enterprise
         TotalConstructionCost = totalConstructionCost;
         Status = EnterpriseStatus.UnderConstruction;
         Recipe = recipe;
+        EquipmentCode = equipmentCode;
     }
 
-    public Enterprise(Guid id, string name, string constructionCode, int equipmentCount, int employees, decimal totalConstructionCost, EnterpriseStatus status, string recipe)
+    public Enterprise(Guid id, string name, string constructionCode, int equipmentCount, int employees, decimal totalConstructionCost, EnterpriseStatus status, string recipe, string equipmentCode)
     {
         Id = id;
         Name = name;
@@ -33,5 +36,6 @@ public class Enterprise
         TotalConstructionCost = totalConstructionCost;
         Status = status;
         Recipe = recipe;
+        EquipmentCode = equipmentCode;
     }
 }

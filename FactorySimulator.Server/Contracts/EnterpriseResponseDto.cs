@@ -8,7 +8,7 @@ public class EnterpriseResponseDto(
     int equipmentCount,
     int employees,
     string status,
-    RecipeModel recipe)
+    RecipeModel recipe, EquipmentModel equipment)
 {
     public string Id { get; } = id;
     public string Name { get; } = name;
@@ -16,4 +16,5 @@ public class EnterpriseResponseDto(
     public int Employees { get; } = employees;
     public string Status { get; } = status;
     public RecipeModel Recipe { get; } = recipe;
+    public EquipmentModel Equipment { get; set; } = equipment;
 }

@@ -3,11 +3,13 @@ import api from "../../utils/api.ts";
 import { useRef } from "react";
 import { useAppDispatch } from "../../store/hook.ts";
 import { addEnterprise } from "../../store/slices/corporation-slice.ts";
-import type { Recipe } from "../../store/types.ts";
+import type { Equipment, Recipe } from "../../store/types.ts";
 
 type ModalProps = {
   employees: number;
-  equipment: number;
+  equipmentCount: number;
+  equipment: Equipment;
+
   maintenance: number;
   powerConsumption: number;
   production: number;
@@ -19,6 +21,7 @@ type ModalProps = {
 export default function Modal({
   employees,
   equipment,
+  equipmentCount,
   maintenance,
   powerConsumption,
   production,
@@ -45,9 +48,10 @@ export default function Modal({
       api
         .post("/api/constructions/build", {
           constructionCode,
-          equipmentCount: equipment,
+          equipmentCount,
           employees,
           recipe: updatedRecipe,
+          equipment
         })
         .then((response) => {
           dispatch(addEnterprise(response.data));
@@ -90,7 +94,7 @@ export default function Modal({
               Рецепт: {typeof recipe === "string" ? recipe : recipe.name}
             </div>
             <div>Количество сотрудников: {employees}</div>
-            <div>Количество оборудования: {equipment}</div>
+            <div>Количество оборудования: {equipmentCount}</div>
             <div>
               Ежемесячное содержание предприятия: {formatNumber(maintenance)}{" "}
               ₽/месяц

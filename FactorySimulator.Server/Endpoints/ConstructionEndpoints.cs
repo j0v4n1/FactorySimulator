@@ -52,7 +52,7 @@ public static class ConstructionEndpoints
                 var enterprise = game.TryBuildEnterprise(resultConstruction.Name,
                     resultConstruction.Code,
                     buildEnterpriseRequest.EquipmentCount,
-                    buildEnterpriseRequest.Employees, totalCost, buildEnterpriseRequest.Recipe.Name);
+                    buildEnterpriseRequest.Employees, totalCost, buildEnterpriseRequest.Recipe.Name, buildEnterpriseRequest.equipment.Code);
 
                 if (enterprise is null)
                     return Results.BadRequest(
@@ -67,7 +67,8 @@ public static class ConstructionEndpoints
                     EquipmentCount = enterprise.EquipmentCount,
                     Employees = enterprise.Employees,
                     Status = enterprise.Status.ToString(),
-                    RecipeCode = buildEnterpriseRequest.Recipe.Code
+                    RecipeCode = buildEnterpriseRequest.Recipe.Code,
+                    EquipmentCode = buildEnterpriseRequest.equipment.Code
                 };
 
                 await db.Enterprises.AddAsync(enterpriseModel);
@@ -79,11 +80,19 @@ public static class ConstructionEndpoints
                 );
 
                 var recipes = await db.Recipes.ToListAsync();
+                var equipments = await db.Equipments.ToListAsync();
                 var recipe = recipes.FirstOrDefault(r => r.Code == enterpriseModel.RecipeCode);
+                var equipment = equipments.FirstOrDefault(e => e.Code == enterpriseModel.EquipmentCode);
+
+                if (recipe is null || equipment is null)
+                {
+                    return Results.BadRequest(
+                         "recipe is null || equipment is null");
+                }
 
                 var response = new EnterpriseResponseDto(enterprise.Id.ToString(), enterprise.Name,
                     enterprise.EquipmentCount,
-                    enterprise.Employees, enterprise.Status.ToString(), recipe);
+                    enterprise.Employees, enterprise.Status.ToString(), recipe, equipment);
 
                 return Results.Ok(response);
             });

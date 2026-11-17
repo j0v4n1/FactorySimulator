@@ -44,7 +44,8 @@ using (var scope = app.Services.CreateScope())
         enterprise.Employees,
         enterprise.TotalConstructionCost,
         Enum.Parse<EnterpriseStatus>(enterprise.Status),
-        enterprise.RecipeCode
+        enterprise.RecipeCode,
+        enterprise.EquipmentCode
     )).ToList();
 
     game.Corporation.LoadEnterprisesFromDb(enterprises);

@@ -76,6 +76,10 @@ namespace FactorySimulator.Infrastructure.Migrations
                     b.Property<int>("Employees")
                         .HasColumnType("integer");
 
+                    b.Property<string>("EquipmentCode")
+                        .IsRequired()
+                        .HasColumnType("text");
+
                     b.Property<int>("EquipmentCount")
                         .HasColumnType("integer");
 

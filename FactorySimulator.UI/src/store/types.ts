@@ -8,6 +8,7 @@ export type Enterprise = {
   equipmentCount: number;
   employees: number;
   recipe: Recipe;
+  equipment: Equipment;
 };
 
 type Resource = {
@@ -54,4 +55,15 @@ export type CorporationData = {
 
 export type GameData = {
   recipes: Recipe[];
+};
+
+export type Equipment = {
+  id: string;
+  code: string;
+  name: string;
+  description: string;
+  powerConsumption: number;
+  unitCost: number;
+  productionPerSecond: number;
+  reducedProductionPerSecond: number;
 };

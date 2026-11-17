@@ -23,7 +23,7 @@ public class Game
     public Corporation Corporation { get; } = new();
 
     public Enterprise? TryBuildEnterprise(string name, string constructionCode, int equipmentCount, int employees,
-        decimal constructionCost, string recipe)
+        decimal constructionCost, string recipe, string equipmentCode)
     {
         if (equipmentCount <= 0 || employees <= 0) return null;
 
@@ -37,7 +37,7 @@ public class Game
             constructionCode,
             equipmentCount,
             employees,
-            constructionCost, recipe);
+            constructionCost, recipe, equipmentCode);
 
         Corporation.AddEnterprise(enterprise);
 

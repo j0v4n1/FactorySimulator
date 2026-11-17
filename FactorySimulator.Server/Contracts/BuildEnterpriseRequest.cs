@@ -8,4 +8,5 @@ public class BuildEnterpriseRequest
     public int EquipmentCount { get; set; }
     public int Employees { get; set; }
     public RecipeModel Recipe { get; set; }
+    public EquipmentModel equipment { get; set; }
 }

@@ -13,11 +13,13 @@ public static class CorporationEndpoints
         {
             var recipes = await db.Recipes.ToListAsync();
             var resources = await db.Resources.ToListAsync();
+            var equipments = await db.Equipments.ToListAsync();
 
             var enterprises = game.Corporation.Enterprises.Select(enterprise =>
             {
 
-                var recipe = recipes.FirstOrDefault(r => r.Code == enterprise.Recipe);
+                var recipe = recipes.FirstOrDefault(recipe => recipe.Code == enterprise.Recipe);
+                var equipment = equipments.FirstOrDefault(equipment => equipment.Code == enterprise.EquipmentCode);
 
                 return new
                 {
@@ -39,7 +41,8 @@ public static class CorporationEndpoints
                             input.Amount
                         }),
                         OutputResource = resources.FirstOrDefault(res => res.Code == recipe.OutputResourceCode)
-                    }
+                    },
+                    Equipment = equipment
                 };
 
             }).ToList();

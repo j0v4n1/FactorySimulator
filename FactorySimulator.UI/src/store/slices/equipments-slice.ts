@@ -3,17 +3,7 @@
   createSlice,
   type PayloadAction,
 } from "@reduxjs/toolkit";
-
-type Equipment = {
-  id: string;
-  code: string;
-  name: string;
-  description: string;
-  powerConsumption: number;
-  unitCost: number;
-  productionPerSecond: number;
-  reducedProductionPerSecond: number;
-};
+import type { Equipment } from "../types";
 
 export const fetchEquipments = createAsyncThunk<Equipment[]>(
   "equipments/fetchEquipments",

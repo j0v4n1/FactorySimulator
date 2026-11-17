@@ -42,7 +42,7 @@ export default function Construction() {
   };
 
   const [employees, setEmployees] = useState(10);
-  const [equipment, setEquipment] = useState(10);
+  const [equipmentCount, setEquipment] = useState(10);
 
   const [recipe, setRecipe] = useState<Recipe | string>("Выберите рецепт");
 
@@ -118,14 +118,14 @@ export default function Construction() {
         />
 
         <label htmlFor="equipment" className="form-label">
-          Количество оборудования: {equipment}
+          Количество оборудования: {equipmentCount}
         </label>
         <input
           type="range"
           className="form-range"
           min={construction.allowedEquipment.minCount}
           max={construction.allowedEquipment.maxCount}
-          value={equipment}
+          value={equipmentCount}
           id="equipment"
           onChange={(e) => setEquipment(Number(e.target.value))}
         />
@@ -152,11 +152,11 @@ export default function Construction() {
           </li>
           <li className="list-group-item d-flex justify-content-between">
             <span>Производительность</span>{" "}
-            <span>{currentEquipment.productionPerSecond * equipment} шт/ч</span>
+            <span>{currentEquipment.productionPerSecond * equipmentCount} шт/ч</span>
           </li>
           <li className="list-group-item d-flex justify-content-between">
             <span>Энергопотребление</span>{" "}
-            <span>{currentEquipment.powerConsumption * equipment} кВт</span>
+            <span>{currentEquipment.powerConsumption * equipmentCount} кВт</span>
           </li>
           <li className="list-group-item d-flex justify-content-between">
             <span>Содержание</span>{" "}
@@ -168,20 +168,21 @@ export default function Construction() {
             Итоговая стоимость{" "}
             {formatNumber(
               construction.constructionCost +
-                equipment * currentEquipment.unitCost,
+                equipmentCount * currentEquipment.unitCost,
             )}{" "}
             ₽
           </span>
           {buildButton()}
           <Modal
             employees={employees}
-            equipment={equipment}
+            equipment={currentEquipment}
+            equipmentCount={equipmentCount}
             maintenance={35000 * employees}
-            powerConsumption={currentEquipment.powerConsumption * equipment}
-            production={currentEquipment.productionPerSecond * equipment}
+            powerConsumption={currentEquipment.powerConsumption * equipmentCount}
+            production={currentEquipment.productionPerSecond * equipmentCount}
             totalCost={
               construction.constructionCost +
-              equipment * currentEquipment.unitCost
+              equipmentCount * currentEquipment.unitCost
             }
             constructionCode={construction.code}
             recipe={recipe}

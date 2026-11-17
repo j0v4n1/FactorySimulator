@@ -2,22 +2,9 @@ import "./enterprises.css";
 import { NavLink } from "react-router";
 import { useAppSelector } from "../../store/hook.ts";
 import Badge from "react-bootstrap/Badge";
-import type { Enterprise, EnterpriseStatus } from "../../store/types.ts";
+import type { Enterprise } from "../../store/types.ts";
 import { useState } from "react";
-
-const statusLabel: Record<EnterpriseStatus, string> = {
-  UnderConstruction: "Строится",
-  Operational: "Работает",
-  Paused: "Остановлено",
-  NoResources: "Нет ресурсов",
-};
-
-const statusBadge: Record<EnterpriseStatus, string> = {
-  UnderConstruction: "info",
-  Operational: "success",
-  Paused: "warning",
-  NoResources: "danger",
-};
+import { statusBadge, statusLabel } from "../../types/types.ts";
 
 export default function Enterprises() {
   const enterprises = useAppSelector(
@@ -58,7 +45,10 @@ export default function Enterprises() {
                 </span>
               </li>
             </ul>
-            <NavLink to="" className="btn btn-primary mt-5">
+            <NavLink
+              to={`/enterprises/${enterprise.id}`}
+              className="btn btn-primary mt-5"
+            >
               Подробнее
             </NavLink>
           </div>
