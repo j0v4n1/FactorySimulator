@@ -50,142 +50,146 @@ export default function EnterpriseViewTab({ enterprise }: ModalProps) {
           <Col className="fs-5">100%</Col>
         </Row>
       </Container>
-      <div className="fs-5 mb-4 mt-4">Основное оборудование</div>
-      <Row className="mb-4">
-        <Col className="fs-5">{enterprise.equipment.name}</Col>
-        <Col className="fs-5">{enterprise.equipmentCount} / 100</Col>
-      </Row>
-      <div className="w-75 m-auto">
-        <ProgressBar now={60} />
+      <div className="enterprise-view-tab__border-wrapper mt-5">
+        <div className="fs-5 mb-4 mt-4">Основное оборудование</div>
+        <Row className="mb-4">
+          <Col className="fs-5">{enterprise.equipment.name}</Col>
+          <Col className="fs-5">{enterprise.equipmentCount} / 100</Col>
+        </Row>
+        <div className="w-75 m-auto">
+          <ProgressBar now={60} />
+        </div>
       </div>
-      <div className="fs-5 mb-4 mt-4">Состояние склада</div>
-      <div className="enterprise-view-tab-cards">
-        <Card
-          className="d-flex align-items-center"
-          style={{ width: "8rem", border: "none" }}
-        >
-          <Card.Img
-            style={{ width: 96, height: 96 }}
-            variant="top"
-            src={coal}
-          />
-          <Card.Body>
-            <Card.Title>Уголь</Card.Title>
-            <Card.Text>23 шт</Card.Text>
-          </Card.Body>
-        </Card>
-        <Card
-          className="d-flex align-items-center"
-          style={{ width: "8rem", border: "none" }}
-        >
-          <Card.Img
-            style={{ width: 96, height: 96 }}
-            variant="top"
-            src={ironOreImage}
-          />
-          <Card.Body>
-            <Card.Title>Железная руда</Card.Title>
-            <Card.Text>11 шт</Card.Text>
-          </Card.Body>
-        </Card>
-        <Card
-          className="d-flex align-items-center"
-          style={{ width: "8rem", border: "none" }}
-        >
-          <Card.Img
-            style={{ width: 96, height: 96 }}
-            variant="top"
-            src={cooperOre}
-          />
-          <Card.Body>
-            <Card.Title>Медная руда</Card.Title>
-            <Card.Text>2 шт</Card.Text>
-          </Card.Body>
-        </Card>
-        <Card
-          className="d-flex align-items-center"
-          style={{ width: "8rem", border: "none" }}
-        >
-          <Card.Img
-            style={{ width: 96, height: 96 }}
-            variant="top"
-            src={wood}
-          />
-          <Card.Body>
-            <Card.Title>Дерево</Card.Title>
-            <Card.Text>45 шт</Card.Text>
-          </Card.Body>
-        </Card>
-        <Card
-          className="d-flex align-items-center"
-          style={{ width: "8rem", border: "none" }}
-        >
-          <Card.Img
-            style={{ width: 96, height: 96 }}
-            variant="top"
-            src={uranOre}
-          />
-          <Card.Body>
-            <Card.Title>Урановая руда</Card.Title>
-            <Card.Text>1 шт</Card.Text>
-          </Card.Body>
-        </Card>
-        <Card
-          className="d-flex align-items-center"
-          style={{ width: "8rem", border: "none" }}
-        >
-          <Card.Img
-            style={{ width: 96, height: 96 }}
-            variant="top"
-            src={ironPlate}
-          />
-          <Card.Body>
-            <Card.Title>Железная плита</Card.Title>
-            <Card.Text>26 шт</Card.Text>
-          </Card.Body>
-        </Card>
-        <Card
-          className="d-flex align-items-center"
-          style={{ width: "8rem", border: "none" }}
-        >
-          <Card.Img
-            style={{ width: 96, height: 96 }}
-            variant="top"
-            src={uranPlate}
-          />
-          <Card.Body>
-            <Card.Title>Урановая плита</Card.Title>
-            <Card.Text>78 шт</Card.Text>
-          </Card.Body>
-        </Card>
-        <Card
-          className="d-flex align-items-center"
-          style={{ width: "8rem", border: "none" }}
-        >
-          <Card.Img
-            style={{ width: 96, height: 96 }}
-            variant="top"
-            src={cooperPlate}
-          />
-          <Card.Body>
-            <Card.Title>Медная плита</Card.Title>
-            <Card.Text>40 шт</Card.Text>
-          </Card.Body>
-        </Card>
-        <Card
-          className="d-flex align-items-center"
-          style={{ width: "8rem", border: "none" }}
-        >
-          <Card.Img
-            style={{ width: 96, height: 96 }}
-            variant="top"
-            src={repairTools}
-          />
-          <Card.Body>
-            <Card.Title>Ремонтный набор</Card.Title>
-            <Card.Text>240 шт</Card.Text>
-          </Card.Body>
-        </Card>
+      <div className="enterprise-view-tab__border-wrapper mt-5">
+        <div className="fs-5 mb-4 mt-4">Состояние склада</div>
+        <div className="enterprise-view-tab-cards">
+          <Card
+            className="d-flex align-items-center"
+            style={{ width: "8rem", border: "none" }}
+          >
+            <Card.Img
+              style={{ width: 96, height: 96 }}
+              variant="top"
+              src={coal}
+            />
+            <Card.Body>
+              <Card.Title>Уголь</Card.Title>
+              <Card.Text>23 шт</Card.Text>
+            </Card.Body>
+          </Card>
+          <Card
+            className="d-flex align-items-center"
+            style={{ width: "8rem", border: "none" }}
+          >
+            <Card.Img
+              style={{ width: 96, height: 96 }}
+              variant="top"
+              src={ironOreImage}
+            />
+            <Card.Body>
+              <Card.Title>Железная руда</Card.Title>
+              <Card.Text>11 шт</Card.Text>
+            </Card.Body>
+          </Card>
+          <Card
+            className="d-flex align-items-center"
+            style={{ width: "8rem", border: "none" }}
+          >
+            <Card.Img
+              style={{ width: 96, height: 96 }}
+              variant="top"
+              src={cooperOre}
+            />
+            <Card.Body>
+              <Card.Title>Медная руда</Card.Title>
+              <Card.Text>2 шт</Card.Text>
+            </Card.Body>
+          </Card>
+          <Card
+            className="d-flex align-items-center"
+            style={{ width: "8rem", border: "none" }}
+          >
+            <Card.Img
+              style={{ width: 96, height: 96 }}
+              variant="top"
+              src={wood}
+            />
+            <Card.Body>
+              <Card.Title>Дерево</Card.Title>
+              <Card.Text>45 шт</Card.Text>
+            </Card.Body>
+          </Card>
+          <Card
+            className="d-flex align-items-center"
+            style={{ width: "8rem", border: "none" }}
+          >
+            <Card.Img
+              style={{ width: 96, height: 96 }}
+              variant="top"
+              src={uranOre}
+            />
+            <Card.Body>
+              <Card.Title>Урановая руда</Card.Title>
+              <Card.Text>1 шт</Card.Text>
+            </Card.Body>
+          </Card>
+          <Card
+            className="d-flex align-items-center"
+            style={{ width: "8rem", border: "none" }}
+          >
+            <Card.Img
+              style={{ width: 96, height: 96 }}
+              variant="top"
+              src={ironPlate}
+            />
+            <Card.Body>
+              <Card.Title>Железная плита</Card.Title>
+              <Card.Text>26 шт</Card.Text>
+            </Card.Body>
+          </Card>
+          <Card
+            className="d-flex align-items-center"
+            style={{ width: "8rem", border: "none" }}
+          >
+            <Card.Img
+              style={{ width: 96, height: 96 }}
+              variant="top"
+              src={uranPlate}
+            />
+            <Card.Body>
+              <Card.Title>Урановая плита</Card.Title>
+              <Card.Text>78 шт</Card.Text>
+            </Card.Body>
+          </Card>
+          <Card
+            className="d-flex align-items-center"
+            style={{ width: "8rem", border: "none" }}
+          >
+            <Card.Img
+              style={{ width: 96, height: 96 }}
+              variant="top"
+              src={cooperPlate}
+            />
+            <Card.Body>
+              <Card.Title>Медная плита</Card.Title>
+              <Card.Text>40 шт</Card.Text>
+            </Card.Body>
+          </Card>
+          <Card
+            className="d-flex align-items-center"
+            style={{ width: "8rem", border: "none" }}
+          >
+            <Card.Img
+              style={{ width: 96, height: 96 }}
+              variant="top"
+              src={repairTools}
+            />
+            <Card.Body>
+              <Card.Title>Ремонтный набор</Card.Title>
+              <Card.Text>240 шт</Card.Text>
+            </Card.Body>
+          </Card>
+        </div>
       </div>
     </>
   );

@@ -4,6 +4,7 @@ import View from "../view/view.tsx";
 import Construction from "../construction/construction.tsx";
 import Enterprises from "../enterprises/enterprises.tsx";
 import Enterprise from "../enterprise/enterprise.tsx";
+import Warehouses from "../warehouses/warehouses.tsx";
 
 export default function Workflow() {
   return (
@@ -13,6 +14,7 @@ export default function Workflow() {
       <Route path="/construction/:id" element={<Construction />} />
       <Route path="/enterprises" element={<Enterprises />} />
       <Route path="/enterprises/:id" element={<Enterprise />} />
+      <Route path="/warehouses/*" element={<Warehouses />} />
     </Routes>
   );
 }

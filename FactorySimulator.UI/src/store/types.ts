@@ -53,8 +53,21 @@ export type CorporationData = {
   enterprises: Enterprise[];
 };
 
+export type WarehouseType = {
+  id: string;
+  code: string;
+  name: string;
+  type: string;
+  benefit: string;
+  distanceFromEnterprise: string;
+  capacity: number;
+  rentPrice: number | null;
+  constructionCost: number | null;
+};
+
 export type GameData = {
   recipes: Recipe[];
+  warehouses: WarehouseType[];
 };
 
 export type Equipment = {

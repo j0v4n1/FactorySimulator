@@ -8,10 +8,6 @@
         <PackageReference Include="Npgsql.EntityFrameworkCore.PostgreSQL" Version="10.0.*"/>
     </ItemGroup>
 
-    <ItemGroup>
-        <Folder Include="Persistence\PostgreSql\Repositories\"/>
-    </ItemGroup>
-
     <PropertyGroup>
         <TargetFramework>net10.0</TargetFramework>
         <ImplicitUsings>enable</ImplicitUsings>

@@ -13,3 +13,14 @@ export const statusBadge: Record<EnterpriseStatus, string> = {
   Paused: "warning",
   NoResources: "danger",
 };
+
+export type WarehousePost = {
+  id: string;
+  warehouseTypeCode: string;
+  enterpriseId: string | null;
+  rentPrice: number | null;
+  warehousePrice: number | null;
+  capacity: number;
+  name: string;
+  distance: string;
+};

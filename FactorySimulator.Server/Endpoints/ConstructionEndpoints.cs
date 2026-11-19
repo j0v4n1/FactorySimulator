@@ -2,7 +2,6 @@
 using FactorySimulator.Infrastructure.Persistence.PostgreSql;
 using FactorySimulator.Infrastructure.Persistence.PostgreSql.Models;
 using FactorySimulator.Server.Contracts;
-using FactorySimulator.Server.debug;
 using FactorySimulator.Server.Hubs;
 using Microsoft.AspNetCore.SignalR;
 using Microsoft.EntityFrameworkCore;
@@ -49,10 +48,11 @@ public static class ConstructionEndpoints
                 var totalCost = resultConstruction.ConstructionCost +
                                 resultEquipment.UnitCost * buildEnterpriseRequest.EquipmentCount;
 
-                var enterprise = game.TryBuildEnterprise(resultConstruction.Name,
+                var enterprise = game.ConstructionSystem.TryBuildEnterprise(resultConstruction.Name,
                     resultConstruction.Code,
                     buildEnterpriseRequest.EquipmentCount,
-                    buildEnterpriseRequest.Employees, totalCost, buildEnterpriseRequest.Recipe.Name, buildEnterpriseRequest.equipment.Code);
+                    buildEnterpriseRequest.Employees, totalCost, buildEnterpriseRequest.Recipe.Name,
+                    buildEnterpriseRequest.equipment.Code);
 
                 if (enterprise is null)
                     return Results.BadRequest(
@@ -85,10 +85,8 @@ public static class ConstructionEndpoints
                 var equipment = equipments.FirstOrDefault(e => e.Code == enterpriseModel.EquipmentCode);
 
                 if (recipe is null || equipment is null)
-                {
                     return Results.BadRequest(
-                         "recipe is null || equipment is null");
-                }
+                        "recipe is null || equipment is null");
 
                 var response = new EnterpriseResponseDto(enterprise.Id.ToString(), enterprise.Name,
                     enterprise.EquipmentCount,

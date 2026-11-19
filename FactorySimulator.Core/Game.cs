@@ -1,46 +1,19 @@
 ﻿using FactorySimulator.Core.Entities;
+using FactorySimulator.Core.Systems;
 
 namespace FactorySimulator.Core;
 
 public class Game
 {
-    private readonly string[] _enterpriseNames =
-    [
-        "Союз",
-        "Гранит",
-        "Монолит",
-        "Вектор",
-        "Рубеж",
-        "Протон",
-        "Малахит",
-        "Полюс",
-        "Авангард",
-        "Сплав"
-    ];
-
-    private readonly Random _random = new();
+    public Game()
+    {
+        ConstructionSystem = new ConstructionSystem(Corporation);
+        WarehouseSystem = new WarehouseSystem(Corporation);
+    }
 
     public Corporation Corporation { get; } = new();
 
-    public Enterprise? TryBuildEnterprise(string name, string constructionCode, int equipmentCount, int employees,
-        decimal constructionCost, string recipe, string equipmentCode)
-    {
-        if (equipmentCount <= 0 || employees <= 0) return null;
 
-        if (!Corporation.TrySpend(constructionCost)) return null;
-
-        var randomIndex = _random.Next(_enterpriseNames.Length);
-
-        var fullName = $"{name} {_enterpriseNames[randomIndex]}";
-
-        var enterprise = new Enterprise(fullName,
-            constructionCode,
-            equipmentCount,
-            employees,
-            constructionCost, recipe, equipmentCode);
-
-        Corporation.AddEnterprise(enterprise);
-
-        return enterprise;
-    }
+    public ConstructionSystem ConstructionSystem { get; }
+    public WarehouseSystem WarehouseSystem { get; }
 }

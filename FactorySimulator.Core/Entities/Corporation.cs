@@ -3,6 +3,8 @@
 public class Corporation
 {
     private readonly List<Enterprise> _enterprises = [];
+    private readonly List<Warehouse> _warehouses = [];
+    public IReadOnlyList<Warehouse> Warehouses => _warehouses;
     public decimal Balance { get; private set; } = 60_000_000m;
     public IReadOnlyCollection<Enterprise> Enterprises => _enterprises.AsReadOnly();
 
@@ -19,6 +21,12 @@ public class Corporation
     {
         ArgumentNullException.ThrowIfNull(enterprise);
         _enterprises.Add(enterprise);
+    }
+
+    public void AddWarehouse(Warehouse warehouse)
+    {
+        ArgumentNullException.ThrowIfNull(warehouse);
+        _warehouses.Add(warehouse);
     }
 
     public void LoadEnterprisesFromDb(IEnumerable<Enterprise> loadedEnterprises)

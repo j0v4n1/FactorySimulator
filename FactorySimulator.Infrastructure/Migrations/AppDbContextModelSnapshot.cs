@@ -142,7 +142,8 @@ namespace FactorySimulator.Infrastructure.Migrations
                 {
                     b.Property<Guid>("Id")
                         .ValueGeneratedOnAdd()
-                        .HasColumnType("uuid");
+                        .HasColumnType("uuid")
+                        .HasDefaultValueSql("gen_random_uuid()");
 
                     b.Property<string>("Code")
                         .IsRequired()
@@ -165,7 +166,8 @@ namespace FactorySimulator.Infrastructure.Migrations
                 {
                     b.Property<Guid>("Id")
                         .ValueGeneratedOnAdd()
-                        .HasColumnType("uuid");
+                        .HasColumnType("uuid")
+                        .HasDefaultValueSql("gen_random_uuid()");
 
                     b.Property<decimal>("BasePrice")
                         .HasColumnType("numeric");
@@ -182,9 +184,89 @@ namespace FactorySimulator.Infrastructure.Migrations
                         .IsRequired()
                         .HasColumnType("text");
 
+                    b.Property<Guid?>("WarehousesModelId")
+                        .HasColumnType("uuid");
+
                     b.HasKey("Id");
 
+                    b.HasIndex("WarehousesModelId");
+
                     b.ToTable("Resources");
+                });
+
+            modelBuilder.Entity("FactorySimulator.Infrastructure.Persistence.PostgreSql.Models.WarehouseTypesModel", b =>
+                {
+                    b.Property<Guid>("Id")
+                        .ValueGeneratedOnAdd()
+                        .HasColumnType("uuid")
+                        .HasDefaultValueSql("gen_random_uuid()");
+
+                    b.Property<string>("Benefit")
+                        .HasColumnType("text");
+
+                    b.Property<int>("Capacity")
+                        .HasColumnType("integer");
+
+                    b.Property<string>("Code")
+                        .IsRequired()
+                        .HasColumnType("text");
+
+                    b.Property<int?>("ConstructionCost")
+                        .HasColumnType("integer");
+
+                    b.Property<string>("Name")
+                        .IsRequired()
+                        .HasColumnType("text");
+
+                    b.Property<int?>("RentPrice")
+                        .HasColumnType("integer");
+
+                    b.Property<string>("Size")
+                        .IsRequired()
+                        .HasColumnType("text");
+
+                    b.Property<string>("Type")
+                        .IsRequired()
+                        .HasColumnType("text");
+
+                    b.HasKey("Id");
+
+                    b.ToTable("WarehouseTypes");
+                });
+
+            modelBuilder.Entity("FactorySimulator.Infrastructure.Persistence.PostgreSql.Models.WarehousesModel", b =>
+                {
+                    b.Property<Guid>("Id")
+                        .ValueGeneratedOnAdd()
+                        .HasColumnType("uuid");
+
+                    b.Property<int>("Capacity")
+                        .HasColumnType("integer");
+
+                    b.Property<string>("DistanceFromEnterprise")
+                        .IsRequired()
+                        .HasColumnType("text");
+
+                    b.Property<Guid?>("EnterpriseId")
+                        .HasColumnType("uuid");
+
+                    b.Property<string>("Name")
+                        .IsRequired()
+                        .HasColumnType("text");
+
+                    b.Property<int?>("RentPrice")
+                        .HasColumnType("integer");
+
+                    b.Property<decimal?>("WarehouseConstructionPrice")
+                        .HasColumnType("numeric");
+
+                    b.Property<string>("WarehouseTypeCode")
+                        .IsRequired()
+                        .HasColumnType("text");
+
+                    b.HasKey("Id");
+
+                    b.ToTable("Warehouses");
                 });
 
             modelBuilder.Entity("FactorySimulator.Infrastructure.Persistence.PostgreSql.Models.ConstructionModel", b =>
@@ -243,6 +325,47 @@ namespace FactorySimulator.Infrastructure.Migrations
                         });
 
                     b.Navigation("Inputs");
+                });
+
+            modelBuilder.Entity("FactorySimulator.Infrastructure.Persistence.PostgreSql.Models.ResourceModel", b =>
+                {
+                    b.HasOne("FactorySimulator.Infrastructure.Persistence.PostgreSql.Models.WarehousesModel", null)
+                        .WithMany("ConstructionResources")
+                        .HasForeignKey("WarehousesModelId");
+                });
+
+            modelBuilder.Entity("FactorySimulator.Infrastructure.Persistence.PostgreSql.Models.WarehousesModel", b =>
+                {
+                    b.OwnsMany("FactorySimulator.Infrastructure.Persistence.PostgreSql.Models.WarehouseItemModel", "Items", b1 =>
+                        {
+                            b1.Property<Guid>("WarehousesModelId");
+
+                            b1.Property<int>("__synthesizedOrdinal")
+                                .ValueGeneratedOnAdd();
+
+                            b1.Property<int>("Amount");
+
+                            b1.Property<string>("ResourceCode")
+                                .IsRequired();
+
+                            b1.HasKey("WarehousesModelId", "__synthesizedOrdinal");
+
+                            b1.ToTable("Warehouses");
+
+                            b1
+                                .ToJson("Items")
+                                .HasColumnType("jsonb");
+
+                            b1.WithOwner()
+                                .HasForeignKey("WarehousesModelId");
+                        });
+
+                    b.Navigation("Items");
+                });
+
+            modelBuilder.Entity("FactorySimulator.Infrastructure.Persistence.PostgreSql.Models.WarehousesModel", b =>
+                {
+                    b.Navigation("ConstructionResources");
                 });
 #pragma warning restore 612, 618
         }

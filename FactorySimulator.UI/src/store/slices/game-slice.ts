@@ -3,7 +3,7 @@ import {
   createSlice,
   type PayloadAction,
 } from "@reduxjs/toolkit";
-import type { GameData, Recipe } from "../types.ts";
+import type { GameData, Recipe, WarehouseType } from "../types.ts";
 import api from "../../utils/api.ts";
 import type { AxiosResponse } from "axios";
 
@@ -24,11 +24,13 @@ type GameStatus = "idle" | "loading" | "succeeded" | "failed";
 
 type GameState = {
   recipes: Recipe[];
+  warehouses: WarehouseType[];
   status: GameStatus;
 };
 
 const initialState: GameState = {
   recipes: [],
+  warehouses: [],
   status: "idle",
 };
 
@@ -45,6 +47,7 @@ const gameSlice = createSlice({
       (state, action: PayloadAction<GameData>) => {
         state.status = "succeeded";
         state.recipes = action.payload.recipes;
+        state.warehouses = action.payload.warehouses;
       },
     );
 

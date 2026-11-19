@@ -1,9 +1,9 @@
 using FactorySimulator.Core;
+using FactorySimulator.Core.Entities;
 using FactorySimulator.Infrastructure.Persistence.PostgreSql;
 using FactorySimulator.Server.Endpoints;
 using FactorySimulator.Server.Hubs;
 using Microsoft.EntityFrameworkCore;
-using FactorySimulator.Core.Entities;
 
 var builder = WebApplication.CreateBuilder(args);
 
@@ -49,7 +49,6 @@ using (var scope = app.Services.CreateScope())
     )).ToList();
 
     game.Corporation.LoadEnterprisesFromDb(enterprises);
-
 }
 
 app.MapHub<GameHub>("/gameHub");
@@ -64,6 +63,6 @@ CorporationEndpoints.MapEndpoints(app);
 
 GameEndpoints.MapEndpoints(app);
 
+WarehouseEndpoints.MapEndpoints(app);
+
 app.Run();
-
-

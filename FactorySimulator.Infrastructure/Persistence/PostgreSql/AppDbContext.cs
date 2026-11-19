@@ -10,6 +10,8 @@ public class AppDbContext(DbContextOptions<AppDbContext> options) : DbContext(op
     public DbSet<EquipmentModel> Equipments { get; set; }
     public DbSet<RecipeModel> Recipes { get; set; }
     public DbSet<ResourceModel> Resources { get; set; }
+    public DbSet<WarehouseTypesModel> WarehouseTypes { get; set; }
+    public DbSet<WarehousesModel> Warehouses { get; set; }
 
     protected override void OnModelCreating(ModelBuilder modelBuilder)
     {
@@ -24,8 +26,23 @@ public class AppDbContext(DbContextOptions<AppDbContext> options) : DbContext(op
         modelBuilder.Entity<RecipeModel>(entity =>
         {
             entity.HasKey(x => x.Id);
+            entity.Property(x => x.Id).HasDefaultValueSql("gen_random_uuid()");
             entity.OwnsMany(x => x.Inputs, builder => builder.ToJson());
         });
-        modelBuilder.Entity<ResourceModel>(entity => { entity.HasKey(x => x.Id); });
+        modelBuilder.Entity<ResourceModel>(entity =>
+        {
+            entity.HasKey(x => x.Id);
+            entity.Property(x => x.Id).HasDefaultValueSql("gen_random_uuid()");
+        });
+        modelBuilder.Entity<WarehouseTypesModel>(entity =>
+        {
+            entity.HasKey(x => x.Id);
+            entity.Property(x => x.Id).HasDefaultValueSql("gen_random_uuid()");
+        });
+        modelBuilder.Entity<WarehousesModel>(entity =>
+        {
+            entity.HasKey(x => x.Id);
+            entity.OwnsMany(x => x.Items, builder => builder.ToJson());
+        });
     }
 }
