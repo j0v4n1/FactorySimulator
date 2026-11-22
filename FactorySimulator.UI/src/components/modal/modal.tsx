@@ -4,6 +4,7 @@ import { useRef } from "react";
 import { useAppDispatch } from "../../store/hook.ts";
 import { addEnterprise } from "../../store/slices/corporation-slice.ts";
 import type { Equipment, Recipe } from "../../store/types.ts";
+import { formatNumber } from "../../utils/common-fn.ts";
 
 type ModalProps = {
   employees: number;
@@ -29,15 +30,11 @@ export default function Modal({
   constructionCode,
   recipe,
 }: ModalProps) {
-  const formatNumber = (value: number) =>
-    new Intl.NumberFormat("ru-RU").format(value);
-
   const dispatch = useAppDispatch();
 
   const modalRef = useRef<HTMLDivElement>(null);
 
   const buildEnterprise = () => {
-    console.log(recipe);
     if (typeof recipe !== "string") {
       const updatedRecipe = {
         name: recipe.name,
@@ -51,7 +48,7 @@ export default function Modal({
           equipmentCount,
           employees,
           recipe: updatedRecipe,
-          equipment
+          equipment,
         })
         .then((response) => {
           dispatch(addEnterprise(response.data));
@@ -102,7 +99,6 @@ export default function Modal({
             <div>Энергопотребление: {powerConsumption} кВт</div>
             <div>Производительность: {production} шт/ч</div>
             <div>Итоговая стоимость: {formatNumber(totalCost)} ₽</div>
-            <div></div>
           </div>
           <div className="modal-footer">
             <button

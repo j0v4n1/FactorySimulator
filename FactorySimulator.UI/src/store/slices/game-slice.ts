@@ -13,9 +13,6 @@ export const fetchGameData = createAsyncThunk(
     const response: AxiosResponse<GameData> = await api.get(
       "http://localhost:5188/api/game",
     );
-
-    console.log(response.data);
-
     return response.data;
   },
 );

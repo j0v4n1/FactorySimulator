@@ -35,6 +35,8 @@ using (var scope = app.Services.CreateScope())
     var game = scope.ServiceProvider.GetRequiredService<Game>();
 
     var dbEnterprises = await db.Enterprises.ToListAsync();
+    var dbWarehouses = await db.Warehouses.ToListAsync();
+    var dbResources = await db.Resources.ToListAsync();
 
     var enterprises = dbEnterprises.Select(enterprise => new Enterprise(
         enterprise.Id,
@@ -48,7 +50,33 @@ using (var scope = app.Services.CreateScope())
         enterprise.EquipmentCode
     )).ToList();
 
+    var resources = dbResources.Select(resource => new Resource(
+        resource.Id,
+        resource.Code,
+        resource.Name,
+        resource.Description,
+        resource.BasePrice
+    )).ToList();
+
+    var warehouses = dbWarehouses.Select(warehouse => new Warehouse(
+        warehouse.Id,
+        warehouse.Name,
+        warehouse.Code,
+        warehouse.Size,
+        warehouse.Type,
+        warehouse.EnterpriseId,
+        warehouse.Capacity,
+        warehouse.Distance,
+        warehouse.RentPrice,
+        warehouse.BuildPrice,
+        warehouse.Items.Select(el => new ResourceAmount(
+            resources.First(resource => resource.Id == el.ResourceId),
+            el.Amount)).ToList()
+    )).ToList();
+
+
     game.Corporation.LoadEnterprisesFromDb(enterprises);
+    game.Corporation.LoadWarehousesFromDb(warehouses);
 }
 
 app.MapHub<GameHub>("/gameHub");

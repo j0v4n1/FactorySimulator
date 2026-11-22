@@ -4,22 +4,6 @@ namespace FactorySimulator.Core.Systems;
 
 public class ConstructionSystem(Corporation corporation)
 {
-    private readonly string[] _enterpriseNames =
-    [
-        "Союз",
-        "Гранит",
-        "Монолит",
-        "Вектор",
-        "Рубеж",
-        "Протон",
-        "Малахит",
-        "Полюс",
-        "Авангард",
-        "Сплав"
-    ];
-
-    private readonly Random _random = new();
-
     public Enterprise? TryBuildEnterprise(string name, string constructionCode, int equipmentCount, int employees,
         decimal constructionCost, string recipe, string equipmentCode)
     {
@@ -27,9 +11,9 @@ public class ConstructionSystem(Corporation corporation)
 
         if (!corporation.TrySpend(constructionCost)) return null;
 
-        var randomIndex = _random.Next(_enterpriseNames.Length);
+        var enterpriseCount = corporation.Enterprises.Count;
 
-        var fullName = $"{name} {_enterpriseNames[randomIndex]}";
+        var fullName = $"{name} №{enterpriseCount + 1}";
 
         var enterprise = new Enterprise(fullName,
             constructionCode,

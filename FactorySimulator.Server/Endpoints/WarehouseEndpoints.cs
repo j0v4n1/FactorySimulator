@@ -1,5 +1,6 @@
 ﻿using FactorySimulator.Core;
 using FactorySimulator.Infrastructure.Persistence.PostgreSql;
+using FactorySimulator.Infrastructure.Persistence.PostgreSql.Models;
 using FactorySimulator.Server.Contracts;
 using FactorySimulator.Server.Hubs;
 using Microsoft.AspNetCore.SignalR;
@@ -16,7 +17,7 @@ public static class WarehouseEndpoints
             IHubContext<GameHub> hubContext) =>
         {
             Console.WriteLine($"ID: [{buildWarehouseRequest.Id}]");
-            Console.WriteLine($"Length: {buildWarehouseRequest.Id?.Length}");
+            Console.WriteLine($"Length: {buildWarehouseRequest.Id.Length}");
             if (!Guid.TryParse(buildWarehouseRequest.Id, out var warehouseGuid))
                 return Results.BadRequest("Некорректный ID");
             var result =
@@ -28,7 +29,7 @@ public static class WarehouseEndpoints
             if (buildWarehouseRequest.Name != result.Name)
                 return Results.BadRequest("Не прошла проверка имени с UI и БД");
 
-            var multiplier = buildWarehouseRequest.DistanceFromEnterprise switch
+            var multiplier = buildWarehouseRequest.Distance switch
             {
                 "near" => 1m,
                 "medium" => 0.7m,
@@ -36,14 +37,11 @@ public static class WarehouseEndpoints
                 _ => 1m
             };
 
-            Console.WriteLine(result.RentPrice * multiplier);
-            Console.WriteLine(buildWarehouseRequest.RentPrice);
-
-            switch (buildWarehouseRequest.WarehouseTypeCode)
+            switch (buildWarehouseRequest.Type)
             {
                 case "rent" when result.RentPrice * multiplier != buildWarehouseRequest.RentPrice:
                     return Results.BadRequest("Не прошла проверка стоимости аренды с UI и БД");
-                case "owned" when buildWarehouseRequest.WarehouseConstructionPrice != result.ConstructionCost:
+                case "owned" when buildWarehouseRequest.BuildPrice != result.BuildPrice:
                     return Results.BadRequest("Не прошла проверка стоимости склада с UI и БД");
             }
 
@@ -52,12 +50,42 @@ public static class WarehouseEndpoints
                 : Guid.Parse(buildWarehouseRequest.EnterpriseId);
 
             var warehouse = game.WarehouseSystem.TryBuildWarehouse(buildWarehouseRequest.Name,
-                buildWarehouseRequest.WarehouseTypeCode,
-                enterpriseGuid, result.Capacity, buildWarehouseRequest.DistanceFromEnterprise,
+                buildWarehouseRequest.Code,
+                buildWarehouseRequest.Type,
+                buildWarehouseRequest.Size,
+                enterpriseGuid, result.Capacity, buildWarehouseRequest.Distance,
                 buildWarehouseRequest.RentPrice,
-                buildWarehouseRequest.WarehouseConstructionPrice);
+                buildWarehouseRequest.BuildPrice);
+
+            if (warehouse is null)
+                return Results.BadRequest(
+                    "Не удалось создать склад");
+
+            var warehouseModel = new WarehousesModel
+            {
+                Id = warehouse.Id,
+                Name = warehouse.Name,
+                Type = warehouse.Type,
+                Code = warehouse.Code,
+                Size = warehouse.Size,
+                EnterpriseId = warehouse.EnterpriseId,
+                Capacity = warehouse.Capacity,
+                RentPrice = warehouse.RentPrice,
+                BuildPrice = warehouse.BuildPrice,
+                Distance = warehouse.Distance
+            };
+
+            await db.Warehouses.AddAsync(warehouseModel);
+            await db.SaveChangesAsync();
+
+            await hubContext.Clients.All.SendAsync(
+                "BalanceUpdated",
+                game.Corporation.Balance
+            );
 
             return Results.Ok(warehouse);
         });
+
+        app.MapGet("/api/warehouses", async (AppDbContext db) => { });
     }
 }

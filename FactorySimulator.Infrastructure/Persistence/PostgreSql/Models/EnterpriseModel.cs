@@ -10,5 +10,5 @@ public class EnterpriseModel
     public int Employees { get; set; }
     public string Status { get; set; } = string.Empty;
     public string RecipeCode { get; set; } = string.Empty;
-    public string EquipmentCode { get; set; }
+    public string EquipmentCode { get; set; } = string.Empty;
 }

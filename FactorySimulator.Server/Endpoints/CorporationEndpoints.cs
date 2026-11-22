@@ -1,6 +1,5 @@
 ﻿using FactorySimulator.Core;
 using FactorySimulator.Infrastructure.Persistence.PostgreSql;
-using FactorySimulator.Server.debug;
 using Microsoft.EntityFrameworkCore;
 
 namespace FactorySimulator.Server.Endpoints;
@@ -17,10 +16,8 @@ public static class CorporationEndpoints
 
             var enterprises = game.Corporation.Enterprises.Select(enterprise =>
             {
-
                 var recipe = recipes.FirstOrDefault(recipe => recipe.Code == enterprise.Recipe);
                 var equipment = equipments.FirstOrDefault(equipment => equipment.Code == enterprise.EquipmentCode);
-
                 return new
                 {
                     enterprise.Id,
@@ -30,27 +27,46 @@ public static class CorporationEndpoints
                     enterprise.Employees,
                     enterprise.TotalConstructionCost,
                     Status = enterprise.Status.ToString(),
-                    Recipe = recipe is null ? null : new
-                    {
-                        Id = recipe.Id.ToString(),
-                        recipe.Code,
-                        recipe.Name,
-                        Inputs = recipe.Inputs.Select(input => new
+                    Recipe = recipe is null
+                        ? null
+                        : new
                         {
-                            Resource = resources.FirstOrDefault(res => res.Code == input.ResourceCode),
-                            input.Amount
-                        }),
-                        OutputResource = resources.FirstOrDefault(res => res.Code == recipe.OutputResourceCode)
-                    },
+                            Id = recipe.Id.ToString(),
+                            recipe.Code,
+                            recipe.Name,
+                            Inputs = recipe.Inputs.Select(input => new
+                            {
+                                Resource = resources.FirstOrDefault(res => res.Code == input.ResourceCode),
+                                input.Amount
+                            }),
+                            OutputResource = resources.FirstOrDefault(res => res.Code == recipe.OutputResourceCode)
+                        },
                     Equipment = equipment
                 };
+            }).ToList();
 
+            var warehouses = game.Corporation.Warehouses.Select(w =>
+            {
+                return new
+                {
+                    w.Id,
+                    w.Name,
+                    w.Code,
+                    w.Size,
+                    w.Type,
+                    w.EnterpriseId,
+                    w.Capacity,
+                    w.Distance,
+                    w.RentPrice,
+                    w.Items
+                };
             }).ToList();
 
             return Results.Ok(new
             {
                 game.Corporation.Balance,
                 enterprises,
+                warehouses
             });
         });
     }

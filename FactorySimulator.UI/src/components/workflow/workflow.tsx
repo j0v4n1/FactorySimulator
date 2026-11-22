@@ -1,10 +1,11 @@
-﻿import { Routes, Route } from "react-router";
+﻿import { Route, Routes } from "react-router";
 import Constructions from "../constructions/constructions.tsx";
 import View from "../view/view.tsx";
 import Construction from "../construction/construction.tsx";
 import Enterprises from "../enterprises/enterprises.tsx";
 import Enterprise from "../enterprise/enterprise.tsx";
 import Warehouses from "../warehouses/warehouses.tsx";
+import Warehouse from "../warehouse/warehouse.tsx";
 
 export default function Workflow() {
   return (
@@ -15,6 +16,7 @@ export default function Workflow() {
       <Route path="/enterprises" element={<Enterprises />} />
       <Route path="/enterprises/:id" element={<Enterprise />} />
       <Route path="/warehouses/*" element={<Warehouses />} />
+      <Route path="/warehouses/:id" element={<Warehouse />} />
     </Routes>
   );
 }

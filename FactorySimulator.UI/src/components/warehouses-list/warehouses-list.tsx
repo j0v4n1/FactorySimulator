@@ -1,92 +1,79 @@
-import Container from "react-bootstrap/Container";
-import Row from "react-bootstrap/Row";
-import Col from "react-bootstrap/Col";
 import Card from "react-bootstrap/Card";
 import ProgressBar from "react-bootstrap/ProgressBar";
-import { Badge } from "react-bootstrap";
+import { Badge, Button } from "react-bootstrap";
+import { useAppSelector } from "../../store/hook.ts";
+import {
+  warehouseSizeLabels,
+  warehouseTypeLabels,
+} from "../../variables/variables.ts";
+import { NavLink } from "react-router";
 
-export default function WareHousesList() {
+export default function WarehousesList() {
+  const warehouses = useAppSelector(
+    (state) => state.corporationSlice.warehouses,
+  );
+  const warehousesList = warehouses
+    .toSorted((a, b) => {
+      return a.name.localeCompare(b.name, "ru", { numeric: true });
+    })
+    .map((warehouse) => {
+      return (
+        <Card key={warehouse.id} className="mt-3 mb-3">
+          <Card.Body>
+            <div className="d-flex justify-content-between align-items-center mb-3">
+              <Card.Title>{warehouse.name}</Card.Title>
+              <Badge bg="success">работает</Badge>
+            </div>
+            <Card.Subtitle as="div" className="mb-3 text-muted">
+              {warehouseTypeLabels[warehouse.type]}{" "}
+              {warehouseSizeLabels[warehouse.size]}
+            </Card.Subtitle>
+            <Card.Text as="div" className="w-100">
+              <div className="d-flex justify-content-between align-items-center mb-3 mt-3">
+                <Card.Subtitle as="div">Занятость</Card.Subtitle>
+                <Card.Subtitle as="div">
+                  {" "}
+                  {warehouse.items.reduce((acc, el) => {
+                    return acc + el.amount;
+                  }, 0)}{" "}
+                  / {warehouse.capacity.toLocaleString("ru-RU")} ед.
+                </Card.Subtitle>
+              </div>
+              <ProgressBar
+                now={Math.round(
+                  (warehouse.items.reduce((acc, el) => {
+                    return acc + el.amount;
+                  }, 0) /
+                    warehouse.capacity) *
+                    100,
+                )}
+              />
+              <div className="d-flex justify-content-between align-items-center mb-3 mt-3">
+                {warehouse.type === "rent" ? (
+                  <>
+                    <Card.Subtitle as="div">Аренда</Card.Subtitle>
+                    <Card.Subtitle as="div">
+                      {warehouse.rentPrice?.toLocaleString("ru-RU") +
+                        " ₽ / месяц"}
+                    </Card.Subtitle>
+                  </>
+                ) : null}
+              </div>
+            </Card.Text>
+            <NavLink to={warehouse.id}>
+              <Button className="w-100 mb-3" size="lg" variant="primary">
+                Подробнее
+              </Button>
+            </NavLink>
+          </Card.Body>
+        </Card>
+      );
+    });
+
   return (
     <div className="warehouse__warehouse-list mt-3 mb-3">
       <h2>Мои склады</h2>
-      <Card className="mt-3 mb-3">
-        <Card.Body>
-          <div className="d-flex justify-content-between align-items-center">
-            <Card.Title>Городской склад №1</Card.Title>
-            <Badge bg="success">работает</Badge>
-          </div>
-          <div className="d-flex align-items-center">
-            <Card.Subtitle className="mb-2 me-2 text-muted">
-              Арендованный
-            </Card.Subtitle>
-            <Card.Subtitle className="mb-2 text-muted">
-              Средний размер
-            </Card.Subtitle>
-          </div>
-          <Card.Text>
-            <Container className="mb-3">
-              <Row className="d-flex justify-content-between">
-                <Col className="p-0" xs="auto">
-                  Занятость
-                </Col>
-                <Col className="p-0" xs="auto">
-                  26 500 / 50 000
-                </Col>
-              </Row>
-            </Container>
-            <ProgressBar now={Math.round((26500 / 50000) * 100)} />
-            <Container className="mt-3">
-              <Row className="d-flex justify-content-between">
-                <Col className="p-0" xs="auto">
-                  Аренда
-                </Col>
-                <Col className="p-0" xs="auto">
-                  30 000 ₽ / месяц
-                </Col>
-              </Row>
-            </Container>
-          </Card.Text>
-        </Card.Body>
-      </Card>
-      <Card className="mt-3 mb-3">
-        <Card.Body>
-          <div className="d-flex justify-content-between align-items-center">
-            <Card.Title>Городской склад №2</Card.Title>
-            <Badge bg="success">работает</Badge>
-          </div>
-          <div className="d-flex align-items-center">
-            <Card.Subtitle className="mb-2 me-2 text-muted">
-              Собственный
-            </Card.Subtitle>
-            <Card.Subtitle className="mb-2 text-muted">
-              Средний размер
-            </Card.Subtitle>
-          </div>
-          <Card.Text>
-            <Container className="mb-3">
-              <Row className="d-flex justify-content-between">
-                <Col className="p-0" xs="auto">
-                  Занятость
-                </Col>
-                <Col className="p-0" xs="auto">
-                  26 500 / 50 000
-                </Col>
-              </Row>
-            </Container>
-            <ProgressBar now={Math.round((26500 / 50000) * 100)} />
-            <Container className="mt-3">
-              <Row className="d-flex justify-content-between">
-                <Col className="p-0" xs="auto">
-                  Аренда
-                </Col>
-                <Col className="p-0" xs="auto">
-                  0 ₽ / месяц
-                </Col>
-              </Row>
-            </Container>
-          </Card.Text>
-        </Card.Body>
-      </Card>
+      {warehousesList}
     </div>
   );
 }

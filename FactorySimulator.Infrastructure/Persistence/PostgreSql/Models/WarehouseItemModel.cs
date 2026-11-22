@@ -2,6 +2,6 @@
 
 public class WarehouseItemModel
 {
-    public string ResourceCode { get; set; } = string.Empty;
+    public Guid ResourceId { get; set; }
     public int Amount { get; set; }
 }

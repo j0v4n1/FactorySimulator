@@ -184,12 +184,7 @@ namespace FactorySimulator.Infrastructure.Migrations
                         .IsRequired()
                         .HasColumnType("text");
 
-                    b.Property<Guid?>("WarehousesModelId")
-                        .HasColumnType("uuid");
-
                     b.HasKey("Id");
-
-                    b.HasIndex("WarehousesModelId");
 
                     b.ToTable("Resources");
                 });
@@ -204,6 +199,9 @@ namespace FactorySimulator.Infrastructure.Migrations
                     b.Property<string>("Benefit")
                         .HasColumnType("text");
 
+                    b.Property<decimal?>("BuildPrice")
+                        .HasColumnType("numeric");
+
                     b.Property<int>("Capacity")
                         .HasColumnType("integer");
 
@@ -211,15 +209,12 @@ namespace FactorySimulator.Infrastructure.Migrations
                         .IsRequired()
                         .HasColumnType("text");
 
-                    b.Property<int?>("ConstructionCost")
-                        .HasColumnType("integer");
-
                     b.Property<string>("Name")
                         .IsRequired()
                         .HasColumnType("text");
 
-                    b.Property<int?>("RentPrice")
-                        .HasColumnType("integer");
+                    b.Property<decimal?>("RentPrice")
+                        .HasColumnType("numeric");
 
                     b.Property<string>("Size")
                         .IsRequired()
@@ -240,10 +235,17 @@ namespace FactorySimulator.Infrastructure.Migrations
                         .ValueGeneratedOnAdd()
                         .HasColumnType("uuid");
 
+                    b.Property<decimal?>("BuildPrice")
+                        .HasColumnType("numeric");
+
                     b.Property<int>("Capacity")
                         .HasColumnType("integer");
 
-                    b.Property<string>("DistanceFromEnterprise")
+                    b.Property<string>("Code")
+                        .IsRequired()
+                        .HasColumnType("text");
+
+                    b.Property<string>("Distance")
                         .IsRequired()
                         .HasColumnType("text");
 
@@ -254,13 +256,14 @@ namespace FactorySimulator.Infrastructure.Migrations
                         .IsRequired()
                         .HasColumnType("text");
 
-                    b.Property<int?>("RentPrice")
-                        .HasColumnType("integer");
-
-                    b.Property<decimal?>("WarehouseConstructionPrice")
+                    b.Property<decimal?>("RentPrice")
                         .HasColumnType("numeric");
 
-                    b.Property<string>("WarehouseTypeCode")
+                    b.Property<string>("Size")
+                        .IsRequired()
+                        .HasColumnType("text");
+
+                    b.Property<string>("Type")
                         .IsRequired()
                         .HasColumnType("text");
 
@@ -327,11 +330,33 @@ namespace FactorySimulator.Infrastructure.Migrations
                     b.Navigation("Inputs");
                 });
 
-            modelBuilder.Entity("FactorySimulator.Infrastructure.Persistence.PostgreSql.Models.ResourceModel", b =>
+            modelBuilder.Entity("FactorySimulator.Infrastructure.Persistence.PostgreSql.Models.WarehouseTypesModel", b =>
                 {
-                    b.HasOne("FactorySimulator.Infrastructure.Persistence.PostgreSql.Models.WarehousesModel", null)
-                        .WithMany("ConstructionResources")
-                        .HasForeignKey("WarehousesModelId");
+                    b.OwnsMany("FactorySimulator.Infrastructure.Persistence.PostgreSql.Models.WarehouseItemModel", "ConstructionResources", b1 =>
+                        {
+                            b1.Property<Guid>("WarehouseTypesModelId");
+
+                            b1.Property<int>("__synthesizedOrdinal")
+                                .ValueGeneratedOnAdd();
+
+                            b1.Property<int>("Amount");
+
+                            b1.Property<string>("ResourceId")
+                                .IsRequired();
+
+                            b1.HasKey("WarehouseTypesModelId", "__synthesizedOrdinal");
+
+                            b1.ToTable("WarehouseTypes");
+
+                            b1
+                                .ToJson("ConstructionResources")
+                                .HasColumnType("jsonb");
+
+                            b1.WithOwner()
+                                .HasForeignKey("WarehouseTypesModelId");
+                        });
+
+                    b.Navigation("ConstructionResources");
                 });
 
             modelBuilder.Entity("FactorySimulator.Infrastructure.Persistence.PostgreSql.Models.WarehousesModel", b =>
@@ -345,7 +370,7 @@ namespace FactorySimulator.Infrastructure.Migrations
 
                             b1.Property<int>("Amount");
 
-                            b1.Property<string>("ResourceCode")
+                            b1.Property<string>("ResourceId")
                                 .IsRequired();
 
                             b1.HasKey("WarehousesModelId", "__synthesizedOrdinal");
@@ -361,11 +386,6 @@ namespace FactorySimulator.Infrastructure.Migrations
                         });
 
                     b.Navigation("Items");
-                });
-
-            modelBuilder.Entity("FactorySimulator.Infrastructure.Persistence.PostgreSql.Models.WarehousesModel", b =>
-                {
-                    b.Navigation("ConstructionResources");
                 });
 #pragma warning restore 612, 618
         }

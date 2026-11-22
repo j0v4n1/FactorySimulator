@@ -3,7 +3,7 @@ import {
   createSlice,
   type PayloadAction,
 } from "@reduxjs/toolkit";
-import type { CorporationData, Enterprise } from "../types.ts";
+import type { CorporationData, Enterprise, Warehouse } from "../types.ts";
 import api from "../../utils/api.ts";
 import type { AxiosResponse } from "axios";
 
@@ -24,12 +24,14 @@ type CorporationStatus = "idle" | "loading" | "succeeded" | "failed";
 
 type CorporationState = {
   balance: number;
+  warehouses: Warehouse[];
   enterprises: Enterprise[];
   status: CorporationStatus;
 };
 
 const initialState: CorporationState = {
   balance: 0,
+  warehouses: [],
   enterprises: [],
   status: "idle",
 };
@@ -48,6 +50,7 @@ const corporationSlice = createSlice({
         state.status = "succeeded";
         state.balance = action.payload.balance;
         state.enterprises = action.payload.enterprises;
+        state.warehouses = action.payload.warehouses;
       },
     );
 
@@ -63,7 +66,11 @@ const corporationSlice = createSlice({
     addEnterprise: (state, action: PayloadAction<Enterprise>) => {
       state.enterprises.push(action.payload);
     },
+    addWarehouse: (state, action: PayloadAction<Warehouse>) => {
+      state.warehouses.push(action.payload);
+    },
   },
 });
-export const { updateBalance, addEnterprise } = corporationSlice.actions;
+export const { updateBalance, addEnterprise, addWarehouse } =
+  corporationSlice.actions;
 export default corporationSlice.reducer;

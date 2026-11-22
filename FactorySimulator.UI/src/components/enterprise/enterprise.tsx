@@ -1,7 +1,7 @@
-import { useParams } from "react-router";
+import { useNavigate, useParams } from "react-router";
 import { useAppSelector } from "../../store/hook";
 import Card from "react-bootstrap/Card";
-import { Badge } from "react-bootstrap";
+import { Badge, Button } from "react-bootstrap";
 import { statusBadge, statusLabel } from "../../types/types.ts";
 import Container from "react-bootstrap/Container";
 import Row from "react-bootstrap/Row";
@@ -9,18 +9,21 @@ import Col from "react-bootstrap/Col";
 import Tab from "react-bootstrap/Tab";
 import Tabs from "react-bootstrap/Tabs";
 import EnterpriseViewTab from "../enterprise-view-tab/enterprise-view-tab.tsx";
+import WarehouseListTab from "../warehouse-list-tab/warehouse-list-tab.tsx";
 
 export default function Enterprise() {
   const { id } = useParams();
-
-  const enterprises = useAppSelector((state) => {
-    return state.corporationSlice.enterprises;
+  const { enterprises, warehouses } = useAppSelector((state) => {
+    return state.corporationSlice;
   });
-
   const enterprise = enterprises.find((item) => {
     return item.id === id;
   });
+  const warehouseEnterprise = warehouses.find((warehouse) => {
+    return warehouse.enterpriseId === id;
+  });
 
+  const navigate = useNavigate();
   if (!enterprise) {
     return <p>Ошибка поиска предприятия или оборудования</p>;
   }
@@ -78,7 +81,25 @@ export default function Enterprise() {
             Tab content for Loooonger Tab
           </Tab>
           <Tab eventKey="warehouse" title="Склад">
-            Tab content for Contact
+            {warehouses.length === 0 || warehouseEnterprise === undefined ? (
+              <div>
+                <div className="mt-3 mb-3">У предприятия нет складов</div>
+                <Button
+                  onClick={() => {
+                    navigate(`/warehouses/add?enterpriseId=${id}`);
+                  }}
+                  className="w-100 mb-3"
+                  size="lg"
+                  variant="primary"
+                >
+                  Добавить склад
+                </Button>
+              </div>
+            ) : (
+              warehouseEnterprise && (
+                <WarehouseListTab warehouse={warehouseEnterprise} />
+              )
+            )}
           </Tab>
           <Tab eventKey="employees" title="Персонал">
             Tab content for Contact

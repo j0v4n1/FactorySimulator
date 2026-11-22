@@ -8,7 +8,8 @@ public class WarehouseTypesModel
     public string Type { get; set; } = string.Empty;
     public string Size { get; set; } = string.Empty;
     public string? Benefit { get; set; }
+    public List<WarehouseItemModel>? ConstructionResources { get; set; } = [];
     public int Capacity { get; set; }
-    public int? RentPrice { get; set; }
-    public int? ConstructionCost { get; set; }
+    public decimal? RentPrice { get; set; }
+    public decimal? BuildPrice { get; set; }
 }

@@ -38,6 +38,7 @@ public class AppDbContext(DbContextOptions<AppDbContext> options) : DbContext(op
         {
             entity.HasKey(x => x.Id);
             entity.Property(x => x.Id).HasDefaultValueSql("gen_random_uuid()");
+            entity.OwnsMany(x => x.ConstructionResources, builder => builder.ToJson());
         });
         modelBuilder.Entity<WarehousesModel>(entity =>
         {

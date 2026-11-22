@@ -1,11 +1,12 @@
 .warehouse {
-  width: 100%;
-  padding-right: 20px;
-  height: calc(100vh - 70px);
-  overflow-y: auto;
+    scrollbar-gutter: stable;
+    width: 100%;
+    padding-right: 20px;
+    height: calc(100vh - 70px);
+    overflow-y: auto;
 }
 
 .warehouse__grid {
-  padding-bottom: 40px;
-  border-bottom: 1px solid grey;
+    padding-bottom: 40px;
+    border-bottom: 1px solid grey;
 }

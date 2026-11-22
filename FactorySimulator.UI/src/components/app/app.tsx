@@ -45,14 +45,21 @@ function App() {
   const equipmentStatus = useAppSelector(
     (state) => state.equipmentsSlice.status,
   );
+  const gameStatus = useAppSelector((state) => state.gameSlice.status);
 
-  const completedRequests = [equipmentStatus, constructionsStatus].filter(
-    (status) => status === "succeeded",
-  ).length;
+  const completedRequests = [
+    equipmentStatus,
+    constructionsStatus,
+    gameStatus,
+  ].filter((status) => status === "succeeded").length;
 
   const progress = (completedRequests / 2) * 100;
 
-  if (equipmentStatus !== "succeeded" || constructionsStatus !== "succeeded") {
+  if (
+    equipmentStatus !== "succeeded" ||
+    constructionsStatus !== "succeeded" ||
+    gameStatus !== "succeeded"
+  ) {
     return (
       <div className="d-flex justify-content-center align-items-center vh-100">
         <div className="w-100" style={{ maxWidth: "350px" }}>

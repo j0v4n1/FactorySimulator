@@ -34,4 +34,10 @@ public class Corporation
         _enterprises.Clear();
         _enterprises.AddRange(loadedEnterprises);
     }
+
+    public void LoadWarehousesFromDb(IEnumerable<Warehouse> loadedWarehouses)
+    {
+        _warehouses.Clear();
+        _warehouses.AddRange(loadedWarehouses);
+    }
 }
