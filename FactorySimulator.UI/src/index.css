@@ -9,3 +9,12 @@ body {
     margin: 0;
 }
 
+.page-scroll-common {
+    scrollbar-gutter: stable;
+    width: 100%;
+    padding-right: 20px;
+    height: calc(100vh - 70px);
+    overflow-y: auto;
+}
+
+

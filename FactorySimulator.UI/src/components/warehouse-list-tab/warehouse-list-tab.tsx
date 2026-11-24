@@ -13,6 +13,9 @@ type WarehouseListTabProps = {
 };
 
 export default function WarehouseListTab({ warehouse }: WarehouseListTabProps) {
+  const totalOccupied = warehouse?.items.reduce((acc, el) => {
+    return acc + el.amount;
+  }, 0);
   return (
     <Card className="mt-3 mb-3">
       <Card.Body>
@@ -29,10 +32,12 @@ export default function WarehouseListTab({ warehouse }: WarehouseListTabProps) {
             <Card.Subtitle>Занятость</Card.Subtitle>
             <Card.Subtitle>
               {" "}
-              0 / {warehouse.capacity.toLocaleString("ru-RU")} ед.
+              {totalOccupied} / {warehouse.capacity.toLocaleString("ru-RU")} ед.
             </Card.Subtitle>
           </div>
-          <ProgressBar now={Math.round((0 / warehouse.capacity) * 100)} />
+          <ProgressBar
+            now={Math.round((totalOccupied / warehouse.capacity) * 100)}
+          />
           <div className="d-flex justify-content-between align-items-center mb-3 mt-3">
             {warehouse.type === "rent" ? (
               <>

@@ -2,6 +2,7 @@
 
 public class Corporation
 {
+    private readonly List<Deposit> _deposits = [];
     private readonly List<Enterprise> _enterprises = [];
     private readonly List<Warehouse> _warehouses = [];
     public IReadOnlyList<Warehouse> Warehouses => _warehouses;
@@ -27,6 +28,12 @@ public class Corporation
     {
         ArgumentNullException.ThrowIfNull(warehouse);
         _warehouses.Add(warehouse);
+    }
+
+    public void AddDeposit(Deposit deposit)
+    {
+        ArgumentNullException.ThrowIfNull(deposit);
+        _deposits.Add(deposit);
     }
 
     public void LoadEnterprisesFromDb(IEnumerable<Enterprise> loadedEnterprises)

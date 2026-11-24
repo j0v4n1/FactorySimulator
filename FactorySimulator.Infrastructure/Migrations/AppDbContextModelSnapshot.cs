@@ -63,6 +63,54 @@ namespace FactorySimulator.Infrastructure.Migrations
                     b.ToTable("Constructions");
                 });
 
+            modelBuilder.Entity("FactorySimulator.Infrastructure.Persistence.PostgreSql.Models.DepositModel", b =>
+                {
+                    b.Property<Guid>("Id")
+                        .ValueGeneratedOnAdd()
+                        .HasColumnType("uuid")
+                        .HasDefaultValueSql("gen_random_uuid()");
+
+                    b.Property<string>("Description")
+                        .IsRequired()
+                        .HasColumnType("text");
+
+                    b.Property<string>("Distance")
+                        .IsRequired()
+                        .HasColumnType("text");
+
+                    b.Property<Guid?>("EnterpriseId")
+                        .HasColumnType("uuid");
+
+                    b.Property<bool>("IsLeased")
+                        .HasColumnType("boolean");
+
+                    b.Property<bool>("IsOwned")
+                        .HasColumnType("boolean");
+
+                    b.Property<string>("Name")
+                        .IsRequired()
+                        .HasColumnType("text");
+
+                    b.Property<decimal>("PurchasePrice")
+                        .HasColumnType("numeric");
+
+                    b.Property<long>("RemainingReserves")
+                        .HasColumnType("bigint");
+
+                    b.Property<decimal>("RentPrice")
+                        .HasColumnType("numeric");
+
+                    b.Property<Guid>("ResourceId")
+                        .HasColumnType("uuid");
+
+                    b.Property<long>("TotalReserves")
+                        .HasColumnType("bigint");
+
+                    b.HasKey("Id");
+
+                    b.ToTable("Deposits");
+                });
+
             modelBuilder.Entity("FactorySimulator.Infrastructure.Persistence.PostgreSql.Models.EnterpriseModel", b =>
                 {
                     b.Property<Guid>("Id")
@@ -72,6 +120,9 @@ namespace FactorySimulator.Infrastructure.Migrations
                     b.Property<string>("ConstructionCode")
                         .IsRequired()
                         .HasColumnType("text");
+
+                    b.Property<Guid>("DepositId")
+                        .HasColumnType("uuid");
 
                     b.Property<int>("Employees")
                         .HasColumnType("integer");
@@ -341,8 +392,7 @@ namespace FactorySimulator.Infrastructure.Migrations
 
                             b1.Property<int>("Amount");
 
-                            b1.Property<string>("ResourceId")
-                                .IsRequired();
+                            b1.Property<Guid>("ResourceId");
 
                             b1.HasKey("WarehouseTypesModelId", "__synthesizedOrdinal");
 
@@ -370,8 +420,7 @@ namespace FactorySimulator.Infrastructure.Migrations
 
                             b1.Property<int>("Amount");
 
-                            b1.Property<string>("ResourceId")
-                                .IsRequired();
+                            b1.Property<Guid>("ResourceId");
 
                             b1.HasKey("WarehousesModelId", "__synthesizedOrdinal");
 

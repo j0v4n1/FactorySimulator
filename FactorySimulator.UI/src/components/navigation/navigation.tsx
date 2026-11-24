@@ -44,6 +44,17 @@ export default function Navigation() {
 
         <li className="list-item">
           <NavLink
+            to="/deposits"
+            className={({ isActive }) =>
+              `btn btn-dark btn--width ${isActive ? "active" : ""}`
+            }
+          >
+            <i className="bi bi-image-alt"></i> Месторождения
+          </NavLink>
+        </li>
+
+        <li className="list-item">
+          <NavLink
             to="/logistics"
             className={({ isActive }) =>
               `btn btn-dark btn--width ${isActive ? "active" : ""}`

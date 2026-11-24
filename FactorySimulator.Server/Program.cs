@@ -37,18 +37,7 @@ using (var scope = app.Services.CreateScope())
     var dbEnterprises = await db.Enterprises.ToListAsync();
     var dbWarehouses = await db.Warehouses.ToListAsync();
     var dbResources = await db.Resources.ToListAsync();
-
-    var enterprises = dbEnterprises.Select(enterprise => new Enterprise(
-        enterprise.Id,
-        enterprise.Name,
-        enterprise.ConstructionCode,
-        enterprise.EquipmentCount,
-        enterprise.Employees,
-        enterprise.TotalConstructionCost,
-        Enum.Parse<EnterpriseStatus>(enterprise.Status),
-        enterprise.RecipeCode,
-        enterprise.EquipmentCode
-    )).ToList();
+    var dbRecipes = await db.Recipes.ToListAsync();
 
     var resources = dbResources.Select(resource => new Resource(
         resource.Id,
@@ -57,6 +46,39 @@ using (var scope = app.Services.CreateScope())
         resource.Description,
         resource.BasePrice
     )).ToList();
+
+    var enterprises = dbEnterprises.Select(enterprise =>
+    {
+        var recipeModel = dbRecipes.FirstOrDefault(r => r.Code == enterprise.RecipeCode);
+
+        if (recipeModel is null)
+            throw new InvalidOperationException(
+                $"Рецепт с кодом '{enterprise.RecipeCode}' не найден для предприятия '{enterprise.Name}' (ID: {enterprise.Id})."
+            );
+
+        var inputs = recipeModel.Inputs.Select(el => new ResourceAmount(
+            resources.First(resource => resource.Code == el.ResourceCode),
+            el.Amount)).ToList();
+
+        var resource = resources.First(r => r.Code == recipeModel.OutputResourceCode);
+
+        var recipe = new Recipe(recipeModel.Id, recipeModel.Code, recipeModel.Name, inputs,
+            resource);
+
+        return new Enterprise(
+            enterprise.Id,
+            enterprise.Name,
+            enterprise.ConstructionCode,
+            enterprise.EquipmentCount,
+            enterprise.Employees,
+            enterprise.TotalConstructionCost,
+            Enum.Parse<EnterpriseStatus>(enterprise.Status),
+            recipe,
+            enterprise.EquipmentCode,
+            enterprise.DepositId
+        );
+    }).ToList();
+
 
     var warehouses = dbWarehouses.Select(warehouse => new Warehouse(
         warehouse.Id,
@@ -92,5 +114,7 @@ CorporationEndpoints.MapEndpoints(app);
 GameEndpoints.MapEndpoints(app);
 
 WarehouseEndpoints.MapEndpoints(app);
+
+DepositsEndpoints.MapEndpoints(app);
 
 app.Run();

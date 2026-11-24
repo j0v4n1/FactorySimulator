@@ -22,6 +22,19 @@ function App() {
   }, [dispatch]);
 
   useEffect(() => {
+    const handleModalHide = () => {
+      if (document.activeElement instanceof HTMLElement) {
+        document.activeElement.blur();
+      }
+    };
+
+    document.addEventListener("hide.bs.modal", handleModalHide);
+    return () => {
+      document.removeEventListener("hide.bs.modal", handleModalHide);
+    };
+  }, []);
+
+  useEffect(() => {
     const connection = createConnection();
 
     connection.on("BalanceUpdated", (balance: number) => {

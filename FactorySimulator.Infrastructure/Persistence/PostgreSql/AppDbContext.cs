@@ -1,4 +1,5 @@
-﻿using FactorySimulator.Infrastructure.Persistence.PostgreSql.Models;
+﻿using FactorySimulator.Core.Enum;
+using FactorySimulator.Infrastructure.Persistence.PostgreSql.Models;
 using Microsoft.EntityFrameworkCore;
 
 namespace FactorySimulator.Infrastructure.Persistence.PostgreSql;
@@ -12,6 +13,7 @@ public class AppDbContext(DbContextOptions<AppDbContext> options) : DbContext(op
     public DbSet<ResourceModel> Resources { get; set; }
     public DbSet<WarehouseTypesModel> WarehouseTypes { get; set; }
     public DbSet<WarehousesModel> Warehouses { get; set; }
+    public DbSet<DepositModel> Deposits { get; set; }
 
     protected override void OnModelCreating(ModelBuilder modelBuilder)
     {
@@ -44,6 +46,13 @@ public class AppDbContext(DbContextOptions<AppDbContext> options) : DbContext(op
         {
             entity.HasKey(x => x.Id);
             entity.OwnsMany(x => x.Items, builder => builder.ToJson());
+        });
+        modelBuilder.Entity<DepositModel>(entity =>
+        {
+            entity.HasKey(x => x.Id);
+            entity.Property(x => x.Id).HasDefaultValueSql("gen_random_uuid()");
+            entity.Property(x => x.Distance).HasConversion(dist => dist.ToString().ToLower(),
+                dist => System.Enum.Parse<Distance>(dist, true));
         });
     }
 }

@@ -4,13 +4,17 @@ namespace FactorySimulator.Core.Systems;
 
 public class ConstructionSystem(Corporation corporation)
 {
-    public Enterprise? TryBuildEnterprise(string name, string constructionCode, int equipmentCount, int employees,
-        decimal constructionCost, string recipe, string equipmentCode)
+    public bool TryBuildEnterprise(int equipmentCount, int employees,
+        decimal constructionCost)
     {
-        if (equipmentCount <= 0 || employees <= 0) return null;
+        if (equipmentCount <= 0 || employees <= 0) return false;
 
-        if (!corporation.TrySpend(constructionCost)) return null;
+        return corporation.TrySpend(constructionCost);
+    }
 
+    public Enterprise? BuildEnterprise(string name, string constructionCode, int equipmentCount, int employees,
+        decimal constructionCost, Recipe recipe, string equipmentCode, Guid depositId)
+    {
         var enterpriseCount = corporation.Enterprises.Count;
 
         var fullName = $"{name} №{enterpriseCount + 1}";
@@ -19,7 +23,7 @@ public class ConstructionSystem(Corporation corporation)
             constructionCode,
             equipmentCount,
             employees,
-            constructionCost, recipe, equipmentCode);
+            constructionCost, recipe, equipmentCode, depositId);
 
         corporation.AddEnterprise(enterprise);
 

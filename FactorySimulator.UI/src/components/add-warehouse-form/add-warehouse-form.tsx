@@ -17,7 +17,7 @@ import {
 } from "../../store/slices/ui-slice.ts";
 import AppModal from "../app-modal/app-modal.tsx";
 import ConfirmAddWarehouse from "../confirm-add-warehouse/confirm-add-warehouse.tsx";
-import { delay } from "../../utils/common-fn.ts";
+import { convertDistance } from "../../utils/common-fn.ts";
 import { useSearchParams } from "react-router";
 
 export default function AddWarehouseForm() {
@@ -51,18 +51,7 @@ export default function AddWarehouseForm() {
     "Средняя удалённость": 0.7,
     Далеко: 0.5,
   };
-  const convertDistance = (distance: string): string => {
-    switch (distance) {
-      case "Близко":
-        return "near";
-      case "Средняя удалённость":
-        return "medium";
-      case "Далеко":
-        return "far";
-      default:
-        throw new Error("Неизвестная удалённость");
-    }
-  };
+
   const rentWarehouses = warehouses
     .filter((warehouse) => {
       return warehouse.type === "rent";
@@ -92,8 +81,6 @@ export default function AddWarehouseForm() {
     dispatch(changeStatusIsLoading(true));
     try {
       const res = await api.post("api/warehouses/build", warehouseApiData);
-      await delay(1500);
-      dispatch(changeStatusIsLoading(false));
       dispatch(addWarehouse(res.data));
       dispatch(closeModal());
     } catch {

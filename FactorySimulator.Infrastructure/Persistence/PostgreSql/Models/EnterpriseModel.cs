@@ -11,4 +11,5 @@ public class EnterpriseModel
     public string Status { get; set; } = string.Empty;
     public string RecipeCode { get; set; } = string.Empty;
     public string EquipmentCode { get; set; } = string.Empty;
+    public Guid DepositId { get; set; }
 }

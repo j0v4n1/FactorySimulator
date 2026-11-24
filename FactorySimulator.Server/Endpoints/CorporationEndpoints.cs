@@ -1,5 +1,6 @@
 ﻿using FactorySimulator.Core;
 using FactorySimulator.Infrastructure.Persistence.PostgreSql;
+using FactorySimulator.Server.debug;
 using Microsoft.EntityFrameworkCore;
 
 namespace FactorySimulator.Server.Endpoints;
@@ -16,7 +17,7 @@ public static class CorporationEndpoints
 
             var enterprises = game.Corporation.Enterprises.Select(enterprise =>
             {
-                var recipe = recipes.FirstOrDefault(recipe => recipe.Code == enterprise.Recipe);
+                var recipe = recipes.FirstOrDefault(recipe => recipe.Code == enterprise.Recipe.Code);
                 var equipment = equipments.FirstOrDefault(equipment => equipment.Code == enterprise.EquipmentCode);
                 return new
                 {
@@ -41,7 +42,9 @@ public static class CorporationEndpoints
                             }),
                             OutputResource = resources.FirstOrDefault(res => res.Code == recipe.OutputResourceCode)
                         },
-                    Equipment = equipment
+                    Equipment = equipment,
+                    enterprise.DepositId
+                    
                 };
             }).ToList();
 
@@ -61,6 +64,8 @@ public static class CorporationEndpoints
                     w.Items
                 };
             }).ToList();
+            
+            DebugHelper.PrintJson(enterprises);
 
             return Results.Ok(new
             {

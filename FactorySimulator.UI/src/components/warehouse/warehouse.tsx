@@ -69,7 +69,7 @@ export default function Warehouse() {
           </Card.Text>
           <Card.Text className="mt-5">
             <Card.Title>Запасы ресурсов</Card.Title>
-            <Table className="" striped bordered hover>
+            <Table striped bordered hover>
               <thead>
                 <tr>
                   <th>#</th>

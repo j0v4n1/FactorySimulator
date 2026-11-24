@@ -9,10 +9,11 @@ export type Enterprise = {
   employees: number;
   recipe: Recipe;
   equipment: Equipment;
+  depositId: string;
 };
 
 type Resource = {
-  code: string;
+  id: string;
   name: string;
   description: string;
   basePrice: number;
@@ -110,11 +111,6 @@ export interface OwnedWarehouse extends BaseWarehouse {
 
 export type Warehouse = RentWarehouse | OwnedWarehouse;
 
-export type GameData = {
-  recipes: Recipe[];
-  warehouses: WarehouseType[];
-};
-
 export type Equipment = {
   id: string;
   code: string;
@@ -131,4 +127,25 @@ export type ModalState = {
   show: boolean;
   size?: "sm" | "lg" | "xl";
   title: string;
+};
+
+export type Deposit = {
+  id: string;
+  name: string;
+  description: string;
+  resource: Resource;
+  totalReserves: number;
+  remainingReserves: number;
+  distance: Distance;
+  rentPrice: number;
+  purchasePrice: number;
+  isOwned: boolean;
+  isLeased: boolean;
+  enterpriseId: string | null;
+};
+
+export type GameData = {
+  recipes: Recipe[];
+  warehouses: WarehouseType[];
+  deposits: Deposit[];
 };

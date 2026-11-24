@@ -3,20 +3,30 @@ import api from "../../utils/api.ts";
 import { useRef } from "react";
 import { useAppDispatch } from "../../store/hook.ts";
 import { addEnterprise } from "../../store/slices/corporation-slice.ts";
-import type { Equipment, Recipe } from "../../store/types.ts";
+import type {
+  Deposit,
+  Enterprise,
+  Equipment,
+  Recipe,
+} from "../../store/types.ts";
 import { formatNumber } from "../../utils/common-fn.ts";
+import type { AxiosResponse } from "axios";
+import { addDepositEnterpriseId } from "../../store/slices/game-slice.ts";
+import * as React from "react";
 
 type ModalProps = {
   employees: number;
   equipmentCount: number;
   equipment: Equipment;
-
   maintenance: number;
   powerConsumption: number;
   production: number;
   totalCost: number;
-  constructionCode: string;
-  recipe: Recipe | string;
+  constructionId: string;
+  recipe: Recipe;
+  depositId: string;
+  setRecipe: React.Dispatch<React.SetStateAction<Recipe | null>>;
+  setDeposit: React.Dispatch<React.SetStateAction<Deposit | null>>;
 };
 
 export default function Modal({
@@ -27,8 +37,11 @@ export default function Modal({
   powerConsumption,
   production,
   totalCost,
-  constructionCode,
+  constructionId,
   recipe,
+  depositId,
+  setRecipe,
+  setDeposit,
 }: ModalProps) {
   const dispatch = useAppDispatch();
 
@@ -37,21 +50,39 @@ export default function Modal({
   const buildEnterprise = () => {
     if (typeof recipe !== "string") {
       const updatedRecipe = {
+        id: recipe.id,
         name: recipe.name,
         code: recipe.code,
         inputs: recipe.inputs,
-        outputResourceCode: recipe.outputResourceCode.code,
+        outputResourceCode: recipe.outputResourceCode.id,
       };
+      console.log({
+        constructionId,
+        equipmentCount,
+        employees,
+        recipe: updatedRecipe,
+        equipment,
+        depositId,
+      });
       api
         .post("/api/constructions/build", {
-          constructionCode,
+          constructionId,
           equipmentCount,
           employees,
           recipe: updatedRecipe,
           equipment,
+          depositId,
         })
-        .then((response) => {
+        .then((response: AxiosResponse<Enterprise>) => {
           dispatch(addEnterprise(response.data));
+          dispatch(
+            addDepositEnterpriseId({
+              depositId,
+              enterpriseId: response.data.id,
+            }),
+          );
+          setRecipe(null);
+          setDeposit(null);
           if (modalRef.current) {
             modalRef.current
               .querySelector<HTMLButtonElement>('[data-bs-dismiss="modal"]')
@@ -87,9 +118,7 @@ export default function Modal({
             ></button>
           </div>
           <div className="modal-body">
-            <div>
-              Рецепт: {typeof recipe === "string" ? recipe : recipe.name}
-            </div>
+            <div>Рецепт: {recipe.name}</div>
             <div>Количество сотрудников: {employees}</div>
             <div>Количество оборудования: {equipmentCount}</div>
             <div>

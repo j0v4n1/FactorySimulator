@@ -16,45 +16,51 @@ export default function Enterprises() {
     useState<Enterprise[]>(enterprises);
 
   const enterprisesList = (enterprises: Enterprise[]) =>
-    enterprises.map((enterprise) => {
-      return (
-        <div key={enterprise.id} className="card" style={{ width: "18 rem" }}>
-          <div className="card-body">
-            <div className="d-flex justify-content-between align-items-center">
-              <h5 className="card-title">{enterprise.name}</h5>
-              <Badge bg={statusBadge[enterprise.status]}>
-                {statusLabel[enterprise.status]}
-              </Badge>
+    enterprises
+      .toSorted((a, b) => {
+        return a.name.localeCompare(b.name, "ru", { numeric: true });
+      })
+      .map((enterprise) => {
+        return (
+          <div key={enterprise.id} className="card" style={{ width: "18 rem" }}>
+            <div className="card-body">
+              <div className="d-flex justify-content-between align-items-center">
+                <h5 className="card-title">{enterprise.name}</h5>
+                <Badge bg={statusBadge[enterprise.status]}>
+                  {statusLabel[enterprise.status]}
+                </Badge>
+              </div>
+              <h6 className="card-subtitle mb-2 text-body-secondary">
+                {enterprise.recipe.name}
+              </h6>
+              <ul className="list-group list-group-flush">
+                <li className="list-group-item d-flex justify-content-between">
+                  <span>Оборудование</span>{" "}
+                  <span className="fw-bold">
+                    {enterprise.equipmentCount} ед.
+                  </span>
+                </li>
+                <li className="list-group-item d-flex justify-content-between">
+                  <span>Сотрудники</span>{" "}
+                  <span className="fw-bold">{enterprise.employees}</span>
+                </li>
+                <li className="list-group-item d-flex justify-content-between">
+                  <span>Производство</span>{" "}
+                  <span className="fw-bold">
+                    {enterprise.equipmentCount * 2} ед./сек.
+                  </span>
+                </li>
+              </ul>
+              <NavLink
+                to={`/enterprises/${enterprise.id}`}
+                className="btn btn-primary mt-5"
+              >
+                Подробнее
+              </NavLink>
             </div>
-            <h6 className="card-subtitle mb-2 text-body-secondary">
-              {enterprise.recipe.name}
-            </h6>
-            <ul className="list-group list-group-flush">
-              <li className="list-group-item d-flex justify-content-between">
-                <span>Оборудование</span>{" "}
-                <span className="fw-bold">{enterprise.equipmentCount} ед.</span>
-              </li>
-              <li className="list-group-item d-flex justify-content-between">
-                <span>Сотрудники</span>{" "}
-                <span className="fw-bold">{enterprise.employees}</span>
-              </li>
-              <li className="list-group-item d-flex justify-content-between">
-                <span>Производство</span>{" "}
-                <span className="fw-bold">
-                  {enterprise.equipmentCount * 2} ед./сек.
-                </span>
-              </li>
-            </ul>
-            <NavLink
-              to={`/enterprises/${enterprise.id}`}
-              className="btn btn-primary mt-5"
-            >
-              Подробнее
-            </NavLink>
           </div>
-        </div>
-      );
-    });
+        );
+      });
 
   const operationalEnterprises = enterprises.filter((enterprise) => {
     return enterprise.status === "Operational";
